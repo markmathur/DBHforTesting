@@ -1,0 +1,19 @@
+html {
+  background-color: rgb(170, 170, 170);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+main {
+  margin-left: 15%;
+  background-color: #F9F9EE;
+  width: 70%;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid rgb(0, 89, 255);
+
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+div {
+  margin-bottom: 10px;
+}

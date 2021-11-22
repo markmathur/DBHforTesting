@@ -225,7 +225,7 @@ class DBhandler {
     $this->takeAwayTrailingComa($this->stringOfValues);
   }
 
-  private function takeAwayTrailingComa(&$str) {
+  public static function takeAwayTrailingComa(&$str) {
     $str = rtrim($str, ", ");
 
   }
