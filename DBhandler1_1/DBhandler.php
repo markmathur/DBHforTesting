@@ -7,6 +7,8 @@ use DBhandler\ExecSQLstatement;
 use DBhandler\GetPostWithId;
 use DBhandler\StorePost;
 require('STR.php');
+require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
+require_once './ENV.php';
 
 class DBhandler {
 
