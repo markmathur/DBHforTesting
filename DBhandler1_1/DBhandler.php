@@ -30,7 +30,6 @@ class DBhandler {
 
 
   // PROPERTIES
-  private $incData; // Incoming data array. 
 
   private $incomingIdColumn;
   private $incomingIdValue;
@@ -98,9 +97,8 @@ class DBhandler {
 
   // *** PRIVATE SUPPORTING METHODS ***
 
-  private function unpackDataAndOpenDBconnection($incomingData) {
-    $this->incData = $incomingData;
-    $this->unpackIncomingDataArray(); 
+  private function unpackDataAndOpenDBconnection($incData) {
+    $this->unpackIncomingDataArray($incData); 
     $dbConn = $this->connectToServer();
 
     return $dbConn;
@@ -125,26 +123,26 @@ class DBhandler {
     }
   }
 
-  private function unpackIncomingDataArray() {
-    $this->extractDBparameters();
+  private function unpackIncomingDataArray($incData) {
+    $this->extractDBparameters($incData);
 
-    if($this->itIsAPost()) {
+    if($this->itIsAPost($incData)) {
 
-      $this->extractColumns();
-      $this->extractValues();
+      $this->extractColumns($incData);
+      $this->extractValues($incData);
 
     }
-    else if($this->itIsAnUpdate()) {
-      $idArray = $this->incData->{self::ARRAYWITHID};
+    else if($this->itIsAnUpdate($incData)) {
+      $idArray = $incData->{self::ARRAYWITHID};
       foreach($idArray as $key => $val) {
         $this->incomingIdColumn = $key;
         $this->incomingIdValue = $val;
       }
-      $this->incomingUpdateDataAsArray = $this->incData->{self::POSTDATA};
+      $this->incomingUpdateDataAsArray = $incData->{self::POSTDATA};
     }
-    else if($this->itIsAnId()) {
+    else if($this->itIsAnId($incData)) {
 
-      $idArray = $this->incData->{self::ARRAYWITHID};
+      $idArray = $incData->{self::ARRAYWITHID};
       if($this->arrayHasMaxOneItem($idArray) == false)
         throw new \Exception("DBhandler received to long array. Only id is needed.");
       else
@@ -206,21 +204,21 @@ class DBhandler {
   }
 
   // Extraction functions
-  private function extractDBparameters() {
-    $this->database = $this->incData->{self::DATABASE};
-    $this->table = $this->incData->{self::TABLE};
+  private function extractDBparameters($incData) {
+    $this->database = $incData->{self::DATABASE};
+    $this->table = $incData->{self::TABLE};
   }
 
-  private function extractColumns() {
-    foreach($this->incData->{self::POSTDATA} as $col => $val) {
+  private function extractColumns($incData) {
+    foreach($incData->{self::POSTDATA} as $col => $val) {
       $this->stringOfColumns .= "{$col}, ";
     }
 
     $this->takeAwayTrailingComa($this->stringOfColumns);
   }
 
-  private function extractValues() {
-    foreach($this->incData->{self::POSTDATA} as $col => $val) {
+  private function extractValues($incData) {
+    foreach($incData->{self::POSTDATA} as $col => $val) {
       $this->stringOfValues .= "'{$val}', ";
     }
 
@@ -232,20 +230,20 @@ class DBhandler {
 
   }
 
-  private function itIsAPost() {
+  private function itIsAPost($incData) {
     $namespc = STR::INCNAMESPACE;
-    $qury = (get_class($this->incData) == "{$namespc}StorePost");
+    $qury = (get_class($incData) == "{$namespc}StorePost");
     return $qury;
   }
 
-  private function itIsAnUpdate() {
+  private function itIsAnUpdate($incData) {
     $namespc = STR::INCNAMESPACE;
-    $qury = (get_class($this->incData) == "{$namespc}UpdatePost");
+    $qury = (get_class($incData) == "{$namespc}UpdatePost");
     return $qury;
   }
 
-  private function itIsAnId() {
-    return isset($this->incData->{self::ARRAYWITHID});
+  private function itIsAnId($incData) {
+    return isset($incData->{self::ARRAYWITHID});
     // $namespc = \STR::INCNAMESPACE;
     // $qury = (get_class($this->incData) == "{$namespc}GetPostWithId");
     // return $qury;
