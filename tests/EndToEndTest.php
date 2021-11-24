@@ -1,24 +1,24 @@
 <?php
 
-use DBhandler\DBhandler;
-use DBhandler\GetPostWithId;
+namespace DBhandler;
+
 use PHPUnit\Framework\TestCase;
 
 require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
 
-final class EndToEndTest extends TestCase {
+// final class EndToEndTest extends TestCase {
 
-  public function testGetPostWithId() {
+//   public function testGetPostWithId() {
 
-    $dbh = new DBhandler();
-    $dataObj = new GetPostWithId(ENV::USERDB, ENV::USERTBL, array('user_id' => 2));
-    $user = $dbh->getPostWithId($dataObj);
+//     $dbh = new DBhandler();
+//     $dataObj = new GetPostWithId(ENV::USERDB, ENV::USERTBL, array('user_id' => 2));
+//     $user = $dbh->getPostWithId($dataObj);
 
-    $this->assertEquals(
-      'bellavit',
-      $user["username"]
-    );
+//     $this->assertEquals(
+//       'bellavit',
+//       $user["username"]
+//     );
 
-  }
+//   }
 
-}
+// }

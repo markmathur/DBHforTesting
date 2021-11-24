@@ -9,6 +9,7 @@ use DBhandler\StorePost;
 require('STR.php');
 require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
 require_once './ENV.php';
+require_once './DBhandler1_1/lib/Unpacker.php';
 
 class DBhandler {
 
@@ -31,16 +32,43 @@ class DBhandler {
 
   // PROPERTIES
 
-  private $incomingIdColumn;
-  private $incomingIdValue;
-  private $incomingUpdateDataAsArray;
+  private string $incomingIdColumn;
+  private string $incomingIdValue;
+  private array $incomingUpdateDataAsArray;
 
-  private $database;
-  private $table;
+  private string $database;
+  private string $table;
 
-  private $stringOfColumns;
-  private $stringOfValues;
-  
+  private string $stringOfColumns;
+  private string $stringOfValues;
+
+  // *** GETTERS AND SETTERS ***
+  function setDatabase(string $dbName) {$this->database = $dbName;}
+  function getDatabase() {return $this->database;}
+
+  function setTable(string $tableName) {$this->table = $tableName;}
+  function getTable() {return $this->table;}
+
+
+  function setIncomingIdColumn(string $col) {$this->incomingIdColumn = $col;}
+  function getIncomingIdColumn() {return $this->incomingIdColumn;}
+
+
+  function setIncomingIdValue(string $val) {$this->incomingIdValue = $val;}
+  function getIncomingIdValue() {return $this->incomingIdValue;}
+
+
+  function setIncomingUpdateDataAsArray(array $arr) {$this->incomingUpdateDataAsArray = $arr;}
+  function getIncomingUpdateDataAsArray() {return $this->incomingUpdateDataAsArray;}
+
+
+  function setStringOfColumns(string $soc) {$this->stringOfColumns = $soc;}
+  function getStringOfColumns() {return $this->stringOfColumns;}
+
+  function setStringOfValues( string $sov) {$this->stringOfValues = $sov;}
+  function getStringOfValues() {return $this->stringOfValues; }
+
+
   // *** PUBLIC METHODS ***
   function storePost(StorePost $dbParametersAndPostData) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndPostData);
@@ -98,7 +126,10 @@ class DBhandler {
   // *** PRIVATE SUPPORTING METHODS ***
 
   private function unpackDataAndOpenDBconnection($incData) {
-    $this->unpackIncomingDataArray($incData); 
+    
+    $unpacker = new Unpacker($this);
+    $unpacker->unpackIncomingDataArray($incData); 
+    
     $dbConn = $this->connectToServer();
 
     return $dbConn;
@@ -121,37 +152,6 @@ class DBhandler {
     catch (\Exception $e) {
       echo $e->getMessage();
     }
-  }
-
-  private function unpackIncomingDataArray($incData) {
-    $this->extractDBparameters($incData);
-
-    if($this->itIsAPost($incData)) {
-
-      $this->extractColumns($incData);
-      $this->extractValues($incData);
-
-    }
-    else if($this->itIsAnUpdate($incData)) {
-      $idArray = $incData->{self::ARRAYWITHID};
-      foreach($idArray as $key => $val) {
-        $this->incomingIdColumn = $key;
-        $this->incomingIdValue = $val;
-      }
-      $this->incomingUpdateDataAsArray = $incData->{self::POSTDATA};
-    }
-    else if($this->itIsAnId($incData)) {
-
-      $idArray = $incData->{self::ARRAYWITHID};
-      if($this->arrayHasMaxOneItem($idArray) == false)
-        throw new \Exception("DBhandler received to long array. Only id is needed.");
-      else
-        foreach($idArray as $key => $val) {
-          $this->incomingIdColumn = $key;
-          $this->incomingIdValue = $val;
-        }
-      }
-      
   }
 
   private function getPostAsArray($rawData) {
@@ -203,54 +203,15 @@ class DBhandler {
     return $sql;
   }
 
-  // Extraction functions
-  private function extractDBparameters($incData) {
-    $this->database = $incData->{self::DATABASE};
-    $this->table = $incData->{self::TABLE};
-  }
-
-  private function extractColumns($incData) {
-    foreach($incData->{self::POSTDATA} as $col => $val) {
-      $this->stringOfColumns .= "{$col}, ";
-    }
-
-    $this->takeAwayTrailingComa($this->stringOfColumns);
-  }
-
-  private function extractValues($incData) {
-    foreach($incData->{self::POSTDATA} as $col => $val) {
-      $this->stringOfValues .= "'{$val}', ";
-    }
-
-    $this->takeAwayTrailingComa($this->stringOfValues);
-  }
-
   public static function takeAwayTrailingComa(&$str) {
     $str = rtrim($str, ", ");
 
   }
+  // Extraction functions
 
-  private function itIsAPost($incData) {
-    $namespc = STR::INCNAMESPACE;
-    $qury = (get_class($incData) == "{$namespc}StorePost");
-    return $qury;
-  }
 
-  private function itIsAnUpdate($incData) {
-    $namespc = STR::INCNAMESPACE;
-    $qury = (get_class($incData) == "{$namespc}UpdatePost");
-    return $qury;
-  }
 
-  private function itIsAnId($incData) {
-    return isset($incData->{self::ARRAYWITHID});
-    // $namespc = \STR::INCNAMESPACE;
-    // $qury = (get_class($this->incData) == "{$namespc}GetPostWithId");
-    // return $qury;
-  }
 
-  private function arrayHasMaxOneItem(array $arr) {
-    return sizeof($arr) == 1;
-  }
+
 }
 

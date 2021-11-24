@@ -1,0 +1,13 @@
+strong {
+  color: rgb(86, 255, 91);
+}
+
+em {
+  color: rgb(255, 115, 0);
+  font-style: normal;
+  font-weight: bold;
+}
+
+body {
+  color: white;
+}

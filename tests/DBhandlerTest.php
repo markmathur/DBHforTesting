@@ -1,9 +1,8 @@
 <?php
 
-namespace DBHtests;
+namespace DBhandler;
 
 use PHPUnit\Framework\TestCase;
-use DBhandler\DBhandler;
 
 require_once './DBhandler1_1/DBhandler.php';
 

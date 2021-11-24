@@ -3,10 +3,13 @@
 use DBhandler\DBhandler;
 use DBhandler\GetAllPosts;
 use DBhandler\STR;
+use DBhandler\UpdatePost;
 
 require_once './DBhandler1_1/DBhandler.php';
 require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
 require_once './ENV.php';
+
+
 
 getUsers();
 
@@ -16,8 +19,11 @@ function getUsers() {
 
   $dbh = new DBhandler();
 
+  $dataObj = new UpdatePost(STR::USERDB, STR::USERTBL, array('user_id' => 1), array())
 
-  $dataObj = new GetAllPosts(STR::USERDB, STR::USERTBL);
-  $allPosts = $dbh->getAllPosts($dataObj);
-  var_dump($allPosts);
+  // $dataObj = new GetAllPosts(STR::USERDB, STR::USERTBL);
+  // $allPosts = $dbh->getAllPosts($dataObj);
+  // var_dump($allPosts);
+
+
 }
