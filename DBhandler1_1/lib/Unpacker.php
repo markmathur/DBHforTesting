@@ -28,7 +28,7 @@ class Unpacker {
       $idArray = $incData->{$this->dbh::ARRAYWITHID};
       foreach($idArray as $key => $val) {
         $this->dbh->setIncomingIdColumn($key);
-        $this->dbh->setIncomingIdValue = ($val);
+        $this->dbh->setIncomingIdValue($val);
       }
       $this->dbh->setIncomingUpdateDataAsArray($incData->{$this->dbh::POSTDATA});
     }

@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace DBhandler;
+
 
 use DBhandler\DeletePostWithId;
 use DBhandler\ExecSQLstatement;
 use DBhandler\GetPostWithId;
 use DBhandler\StorePost;
+use mysqli;
+
 require('STR.php');
 require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
 require_once './ENV.php';
@@ -34,7 +39,7 @@ class DBhandler {
 
   private string $incomingIdColumn;
   private string $incomingIdValue;
-  private array $incomingUpdateDataAsArray;
+  private array $incomingUpdateDataAsArray; // This is used by updatePost(). It might be possible to switch it out for $stringOfColumns and $stringOfValues.
 
   private string $database;
   private string $table;
@@ -73,7 +78,10 @@ class DBhandler {
   function storePost(StorePost $dbParametersAndPostData) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndPostData);
     $sql = $this->SQL_storePost(); 
+    var_dump($sql);
     $success = $this->performDBcall($dbConn, $sql);
+    var_dump(mysqli_error_list($dbConn));
+    
     $dbConn->close();
     return $success;
   }

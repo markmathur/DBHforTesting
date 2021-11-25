@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\wamp64\www\DBHforTesting\tests" tests="7" assertions="7" errors="0" warnings="0" failures="0" skipped="0" time="0.011421">
+    <testsuite name="DBhandler\DBhandlerTest" file="C:\wamp64\www\DBHforTesting\tests\DBhandlerTest.php" tests="2" assertions="2" errors="0" warnings="0" failures="0" skipped="0" time="0.011011">
+      <testcase name="testTrimTrailingComa" class="DBhandler\DBhandlerTest" classname="DBhandler.DBhandlerTest" file="C:\wamp64\www\DBHforTesting\tests\DBhandlerTest.php" line="13" assertions="1" time="0.004949"/>
+      <testcase name="testGetPostWithId" class="DBhandler\DBhandlerTest" classname="DBhandler.DBhandlerTest" file="C:\wamp64\www\DBHforTesting\tests\DBhandlerTest.php" line="22" assertions="1" time="0.006062">
+        <system-out>object(DBhandler\GetPostWithId)#286 (3) {
+  ["databaseName"]=&gt;
+  string(12) "flashcardapp"
+  ["tableName"]=&gt;
+  string(11) "tbl_fcusers"
+  ["arrayWithId"]=&gt;
+  array(1) {
+    ["user_id"]=&gt;
+    string(1) "1"
+  }
+}
+</system-out>
+      </testcase>
+    </testsuite>
+    <testsuite name="DBhandler\UnpackerTest" file="C:\wamp64\www\DBHforTesting\tests\UnpackerTest.php" tests="5" assertions="5" errors="0" warnings="0" failures="0" skipped="0" time="0.000410">
+      <testcase name="testExtracDBname" class="DBhandler\UnpackerTest" classname="DBhandler.UnpackerTest" file="C:\wamp64\www\DBHforTesting\tests\UnpackerTest.php" line="18" assertions="1" time="0.000101">
+        <system-out>object(DBhandler\UpdatePost)#377 (4) {
+  ["databaseName"]=&gt;
+  string(12) "flashcardapp"
+  ["tableName"]=&gt;
+  string(13) "tbl_flashcard"
+  ["arrayWithId"]=&gt;
+  array(1) {
+    ["card_id"]=&gt;
+    int(1)
+  }
+  ["dataAccToColumns"]=&gt;
+  array(2) {
+    ["text1"]=&gt;
+    string(17) "Tested by PHPunit"
+    ["text2"]=&gt;
+    string(16) "Tesat av PHPunit"
+  }
+}
+</system-out>
+      </testcase>
+      <testcase name="testExtractTableName" class="DBhandler\UnpackerTest" classname="DBhandler.UnpackerTest" file="C:\wamp64\www\DBHforTesting\tests\UnpackerTest.php" line="27" assertions="1" time="0.000079">
+        <system-out>object(DBhandler\UpdatePost)#376 (4) {
+  ["databaseName"]=&gt;
+  string(12) "flashcardapp"
+  ["tableName"]=&gt;
+  string(13) "tbl_flashcard"
+  ["arrayWithId"]=&gt;
+  array(1) {
+    ["card_id"]=&gt;
+    int(1)
+  }
+  ["dataAccToColumns"]=&gt;
+  array(2) {
+    ["text1"]=&gt;
+    string(17) "Tested by PHPunit"
+    ["text2"]=&gt;
+    string(16) "Tesat av PHPunit"
+  }
+}
+</system-out>
+      </testcase>
+      <testcase name="testExtractIncomingIdColumn" class="DBhandler\UnpackerTest" classname="DBhandler.UnpackerTest" file="C:\wamp64\www\DBHforTesting\tests\UnpackerTest.php" line="36" assertions="1" time="0.000076">
+        <system-out>object(DBhandler\UpdatePost)#377 (4) {
+  ["databaseName"]=&gt;
+  string(12) "flashcardapp"
+  ["tableName"]=&gt;
+  string(13) "tbl_flashcard"
+  ["arrayWithId"]=&gt;
+  array(1) {
+    ["card_id"]=&gt;
+    int(1)
+  }
+  ["dataAccToColumns"]=&gt;
+  array(2) {
+    ["text1"]=&gt;
+    string(17) "Tested by PHPunit"
+    ["text2"]=&gt;
+    string(16) "Tesat av PHPunit"
+  }
+}
+</system-out>
+      </testcase>
+      <testcase name="testExtractIncomingIdValue" class="DBhandler\UnpackerTest" classname="DBhandler.UnpackerTest" file="C:\wamp64\www\DBHforTesting\tests\UnpackerTest.php" line="45" assertions="1" time="0.000075">
+        <system-out>object(DBhandler\UpdatePost)#376 (4) {
+  ["databaseName"]=&gt;
+  string(12) "flashcardapp"
+  ["tableName"]=&gt;
+  string(13) "tbl_flashcard"
+  ["arrayWithId"]=&gt;
+  array(1) {
+    ["card_id"]=&gt;
+    int(1)
+  }
+  ["dataAccToColumns"]=&gt;
+  array(2) {
+    ["text1"]=&gt;
+    string(17) "Tested by PHPunit"
+    ["text2"]=&gt;
+    string(16) "Tesat av PHPunit"
+  }
+}
+</system-out>
+      </testcase>
+      <testcase name="testExtractIncomingUpdateDataAsArray" class="DBhandler\UnpackerTest" classname="DBhandler.UnpackerTest" file="C:\wamp64\www\DBHforTesting\tests\UnpackerTest.php" line="54" assertions="1" time="0.000079">
+        <system-out>object(DBhandler\UpdatePost)#377 (4) {
+  ["databaseName"]=&gt;
+  string(12) "flashcardapp"
+  ["tableName"]=&gt;
+  string(13) "tbl_flashcard"
+  ["arrayWithId"]=&gt;
+  array(1) {
+    ["card_id"]=&gt;
+    int(1)
+  }
+  ["dataAccToColumns"]=&gt;
+  array(2) {
+    ["text1"]=&gt;
+    string(17) "Tested by PHPunit"
+    ["text2"]=&gt;
+    string(16) "Tesat av PHPunit"
+  }
+}
+</system-out>
+      </testcase>
+    </testsuite>
+  </testsuite>
+</testsuites>
