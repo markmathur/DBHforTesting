@@ -14,9 +14,10 @@ class Unpacker {
   }
 
   function unpackIncomingDataArray($incData) {
-     var_dump($incData);
+    
+    $xtractor = new Extractor($this->dbh, $incData);
 
-    $this->extractDBparameters($incData);
+    $xtractor->extractDBparameters();
 
     if($this->itIsAPost($incData)) {
 
@@ -44,11 +45,6 @@ class Unpacker {
         }
     }
       
-  }
-
-  private function extractDBparameters($incData) {
-    $this->dbh->setDatabase($incData->{$this->dbh::DATABASE});
-    $this->dbh->setTable($incData->{$this->dbh::TABLE});
   }
 
   private function extractColumns($incData) {
@@ -97,7 +93,55 @@ class Unpacker {
 
   public static function takeAwayTrailingComa(&$str) {
     $str = rtrim($str, ", ");
+  }
+
+}
+
+class Extractor {
+  private DBhandler $dbh;
+  private $incData;
+  private string $stringOfColumns;
+  private string $stringOfValues;
+
+  function __construct($dBhandler, $incomingDataFromRequest) {
+    
+    $this->dbh = $dBhandler;
+    $this->incData = $incomingDataFromRequest;
 
   }
 
+  // *** PUBLIC METHODS ***
+
+  public function extractDBparameters() {
+
+    $this->setDBnameInDBHandler();
+    $this->setTableNameInDBHandler();  
+  
+  }
+
+  public function extractColumns($incData) {
+    foreach($this->incData->{$this->dbh::POSTDATA} as $col => $val) {
+      $this->stringOfColumns .= "{$col}, ";
+    }
+
+    $this->takeAwayTrailingComa($this->stringOfColumns);
+    
+    $this->dbh->setStringOfColumns($this->stringOfColumns);
+  }
+
+
+  // *** PRIVATE METHODS ***
+
+  private function setDBnameInDBHandler() {
+    $this->dbh->setDatabase($this->incData->{$this->dbh::DATABASE});
+  }
+
+  private function setTableNameInDBHandler() {
+    $this->dbh->setTable($this->incData->{$this->dbh::TABLE});
+  }
+
+
+  public static function takeAwayTrailingComa(&$str) {
+    $str = rtrim($str, ", ");
+  }
 }
