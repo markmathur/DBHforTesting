@@ -2,6 +2,8 @@
 
 namespace DBhandler;
 
+require_once './DBhandler1_1/lib/Extractor.php';
+
 class Unpacker {
   
   private DBhandler $dbh;
@@ -21,8 +23,8 @@ class Unpacker {
 
     if($this->itIsAPost($incData)) {
 
-      $this->extractColumns($incData);
-      $this->extractValues($incData);
+      $xtractor->extractColumns($incData);
+      $xtractor->extractValues($incData);
 
     }
     else if($this->itIsAnUpdate($incData)) {
@@ -45,26 +47,6 @@ class Unpacker {
         }
     }
       
-  }
-
-  private function extractColumns($incData) {
-    foreach($incData->{$this->dbh::POSTDATA} as $col => $val) {
-      $this->stringOfColumns .= "{$col}, ";
-    }
-
-    $this->takeAwayTrailingComa($this->stringOfColumns);
-    
-    $this->dbh->setStringOfColumns($this->stringOfColumns);
-  }
-
-  private function extractValues($incData) {
-    foreach($incData->{$this->dbh::POSTDATA} as $col => $val) {
-      $this->stringOfValues .= "'{$val}', ";
-    }
-
-    $this->takeAwayTrailingComa($this->stringOfValues);
-
-    $this->dbh->setStringOfValues($this->stringOfValues);
   }
 
   private function itIsAPost($incData) {
@@ -100,51 +82,3 @@ class Unpacker {
 
 
 
-class Extractor {
-  private DBhandler $dbh;
-  private $incData;
-  private string $stringOfColumns;
-  private string $stringOfValues;
-
-  function __construct($dBhandler, $incomingDataFromRequest) {
-    
-    $this->dbh = $dBhandler;
-    $this->incData = $incomingDataFromRequest;
-
-  }
-
-  // *** PUBLIC METHODS ***
-
-  public function extractDBparameters() {
-
-    $this->setDBnameInDBHandler();
-    $this->setTableNameInDBHandler();  
-  
-  }
-
-  public function extractColumns($incData) {
-    foreach($this->incData->{$this->dbh::POSTDATA} as $col => $val) {
-      $this->stringOfColumns .= "{$col}, ";
-    }
-
-    $this->takeAwayTrailingComa($this->stringOfColumns);
-    
-    $this->dbh->setStringOfColumns($this->stringOfColumns);
-  }
-
-
-  // *** PRIVATE METHODS ***
-
-  private function setDBnameInDBHandler() {
-    $this->dbh->setDatabase($this->incData->{$this->dbh::DATABASE});
-  }
-
-  private function setTableNameInDBHandler() {
-    $this->dbh->setTable($this->incData->{$this->dbh::TABLE});
-  }
-
-
-  public static function takeAwayTrailingComa(&$str) {
-    $str = rtrim($str, ", ");
-  }
-}

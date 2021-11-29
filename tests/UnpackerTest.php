@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 // require_once './DBhandler1_1/lib/Unpacker.php';
 require './DBhandler1_1/DBhandler.php';
 require './DBhandler1_1/incomingDataClasses/UpdatePost.php';
+require './DBhandler1_1/incomingDataClasses/StorePost.php';
 
 
 final class UnpackerTest extends TestCase {
@@ -61,8 +62,22 @@ final class UnpackerTest extends TestCase {
     );
   }
 
+  public function testExtractColumnsAndValues() {
+    $mockDBH = $this->mockUnpack_StorePost_Request();
 
-  // ** The execution **
+    $this->assertEquals(
+      'text1, text2, user',
+      $mockDBH->getStringOfColumns()
+    );
+
+    $this->assertEquals(
+      "'dog', 'hund', '1'",
+      $mockDBH->getStringOfValues()
+    );
+  }
+
+
+  // ** The updatePost execution **
 
   private function mockUnpackUpdatePostRequest() {
     $mockIncData = new UpdatePost(
@@ -87,11 +102,31 @@ final class UnpackerTest extends TestCase {
     $unpacker = new Unpacker($mockDbh);
     $unpacker->unpackIncomingDataArray($mockIncData);
     
-    return $mockDbh;
+    return $mockDbh; // The results are stored in this object, thanks to dependency injection.
   }
 
+  // ** StorePost execution **
+
+  private function mockUnpack_StorePost_Request() {
+
+    $mockIncData = new StorePost(
+      'flashcardapp', 
+      'tbl_flashcard',
+      array(
+        'text1' => 'dog',
+        'text2' => 'hund',
+        'user' => 1
+      )
+    );
+
+    $mockDbh = $this->unpackAndUpdateMockedDBH($mockIncData);
+
+    return $mockDbh; // The results are stored in this object, thanks to dependency injection.
+  }
   
 }
+
+
 
 class MockDBH extends DBhandler {}
 
