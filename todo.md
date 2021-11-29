@@ -5,9 +5,10 @@
 - Start outsourcing functionality into new files, in `/lib`. 
   - Write end-to-end-tests.
     - This will make sure the Unpacker-extraction did't fail. 
-    - Send in a mocked DBhandler-object (instead of the `$this`).
+    - **DONE** Send in a mocked DBhandler-object (instead of the `$this`).
   - Then
     - Break out stuff from Unpacker, and write UNIT-tests for that.  
+    - *NOW* To test that storing stuff would work, we can first break out an SQL-generator, and then send stuff into that and see that the right SQL is written. 
 
 ## Later
 - STR.php should not be in DBhandler-folder. It is environmental. 

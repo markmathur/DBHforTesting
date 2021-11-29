@@ -15,6 +15,7 @@ require('STR.php');
 require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
 require_once './ENV.php';
 require_once './DBhandler1_1/lib/Unpacker.php';
+require_once './DBhandler1_1/lib/SQLgenerator.php';
 
 class DBhandler {
 
@@ -47,6 +48,15 @@ class DBhandler {
   private string $stringOfColumns;
   private string $stringOfValues;
 
+  // SUPPORTING LIB
+
+  private $sqlGen;
+
+  function __construct()
+  {
+    $this->sqlGen = new SQLgenerator($this);
+  }
+
   // *** GETTERS AND SETTERS ***
   function setDatabase(string $dbName) {$this->database = $dbName;}
   function getDatabase() {return $this->database;}
@@ -77,7 +87,7 @@ class DBhandler {
   // *** PUBLIC METHODS ***
   function storePost(StorePost $dbParametersAndPostData) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndPostData);
-    $sql = $this->SQL_storePost(); 
+    $sql = $this->sqlGen->SQL_storePost(); 
     var_dump($sql);
     $success = $this->performDBcall($dbConn, $sql);
     var_dump(mysqli_error_list($dbConn));
@@ -88,7 +98,7 @@ class DBhandler {
 
   function getPostWithId(GetPostWithId $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
-    $sql = $this->SQL_getPostWithId(); 
+    $sql = $this->sqlGen->SQL_getPostWithId(); 
     $rawData = $this->performDBcall($dbConn, $sql);
     $postAsArray = $this->getPostAsArray($rawData);
     $dbConn->close();
@@ -97,7 +107,7 @@ class DBhandler {
 
   function getAllPosts(GetAllPosts $dbParameters) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParameters);
-    $sql = $this->SQL_getAllPosts(); 
+    $sql = $this->sqlGen->SQL_getAllPosts(); 
     $rawData = $this->performDBcall($dbConn, $sql);
     $postAsArray = $this->getAllPostsAsArray($rawData);
     $dbConn->close();
@@ -106,7 +116,7 @@ class DBhandler {
 
   function getPostsByCriteria(GetPostWithId $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
-    $sql = $this->SQL_getPostWithId(); 
+    $sql = $this->sqlGen->SQL_getPostWithId(); 
     $rawData = $this->performDBcall($dbConn, $sql);
     $postAsArray = $this->getAllPostsAsArray($rawData);
     $dbConn->close();
@@ -115,7 +125,7 @@ class DBhandler {
 
   function updatePost(UpdatePost $dbParametersAndUpdatedPost) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndUpdatedPost);
-    $sql = $this->SQL_updatePost();
+    $sql = $this->sqlGen->SQL_updatePost();
     $success = $this->performDBcall($dbConn, $sql);
     $dbConn->close();
     return $success;
@@ -123,7 +133,7 @@ class DBhandler {
 
   function deletePostWithId(DeletePostWithId  $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
-    $sql = $this->SQL_deletePostWithId(); 
+    $sql = $this->sqlGen->SQL_deletePostWithId(); 
     $success = $this->performDBcall($dbConn, $sql);
     if(mysqli_affected_rows($dbConn) < 1) return false;
     $dbConn->close();
@@ -183,38 +193,9 @@ class DBhandler {
   }
 
   // SQL generators
-  private function SQL_storePost() {
-    return "INSERT INTO $this->table 
-    ($this->stringOfColumns) VALUES ($this->stringOfValues);";
-  }
 
-  private function SQL_getPostWithId() {
-    return "SELECT * FROM $this->table WHERE $this->incomingIdColumn = '$this->incomingIdValue';";
-  }
 
-  private function SQL_getAllPosts() {
-    return "SELECT * FROM $this->table;";
-  }
 
-  private function SQL_deletePostWithId() {
-    return "DELETE FROM $this->table WHERE $this->incomingIdColumn = $this->incomingIdValue;";
-  }
-
-  private function SQL_updatePost() {
-    
-    $sql = "UPDATE $this->table SET ";
-    foreach($this->incomingUpdateDataAsArray as $col => $val) {
-      $sql .= " $col = '$val', ";
-    }
-    $this->takeAwayTrailingComa($sql);
-    $sql .= " WHERE $this->incomingIdColumn = $this->incomingIdValue;";
-    return $sql;
-  }
-
-  public static function takeAwayTrailingComa(&$str) {
-    $str = rtrim($str, ", ");
-
-  }
   // Extraction functions
 
 

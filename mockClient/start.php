@@ -1,5 +1,7 @@
 <?php
 
+namespace mockClient;
+
 use DBhandler\DBhandler;
 use DBhandler\GetAllPosts;
 use DBhandler\STR;

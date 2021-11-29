@@ -5,11 +5,10 @@ namespace DBhandler;
 use DBhandler\DBhandler;
 use PHPUnit\Framework\TestCase;
 
-require_once './DBhandler1_1/lib/Unpacker.php';
-require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
-require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
-require_once './DBhandler1_1/STR.php';
-require_once './DBhandler1_1/DBhandler.php';
+// require_once './DBhandler1_1/lib/Unpacker.php';
+require './DBhandler1_1/DBhandler.php';
+require './DBhandler1_1/incomingDataClasses/UpdatePost.php';
+
 
 final class UnpackerTest extends TestCase {
 
@@ -62,26 +61,6 @@ final class UnpackerTest extends TestCase {
     );
   }
 
-  // public function testStringOfColumns() {
-  //   $mockDbh = $this->mockUnpackUpdatePostRequest();    
-
-  //   $this->assertEquals(
-  //     '1',
-  //     $mockDbh->getIncomingIdValue()
-  //   );
-  // }
-
-  // ** Based on getPostById and getPostByCriteria
-  // public function testGetPostById() {
-  //   $mockDbh = $this->mockUnpackGetPostById();
-
-  //   $this->assertEquals(
-  //     array(        
-  //       'bellav',
-  //     $mockDbh->getIncomingUpdateDataAsArray()
-  //   );
-  // }
-
 
   // ** The execution **
 
@@ -100,20 +79,6 @@ final class UnpackerTest extends TestCase {
 
     $mockDbh = $this->unpackAndUpdateMockedDBH($mockIncData);
     
-    return $mockDbh;
-  }
-
-  private function mockUnpackGetPostById() {
-    $mockIncData = new GetPostWithId(
-      'flashcardapp', 
-      'tbl_flashcard', 
-      array(
-        'card_id' => 1
-      )
-    );
-
-    $mockDbh = $this->unpackAndUpdateMockedDBH($mockIncData);
-
     return $mockDbh;
   }
 
