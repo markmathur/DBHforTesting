@@ -21,53 +21,51 @@ class Unpacker {
 
     $xtractor->extractDBparameters();
 
-    if($this->itIsAPost($incData)) {
-
+    if($this->incDataIsOf_StorePostClass($incData)) {
+      // Creating a new post
       $xtractor->extractColumns($incData);
       $xtractor->extractValues($incData);
 
     }
-    else if($this->itIsAnUpdate($incData)) {
-      $idArray = $incData->{$this->dbh::ARRAYWITHID};
-      foreach($idArray as $key => $val) {
-        $this->dbh->setIncomingIdColumn($key);
-        $this->dbh->setIncomingIdValue($val);
-      }
+    else if($this->incDataIsOf_UpdatePostClass($incData)) {
+      // Updating a current post
+      $this->setIdColumnNameAndValue($incData);
       $this->dbh->setIncomingUpdateDataAsArray($incData->{$this->dbh::POSTDATA});
     }
     else if($this->itIsAnId($incData)) {
-
-      $idArray = $incData->{$this->dbh::ARRAYWITHID};
-      if($this->arrayHasMaxOneItem($idArray) == false)
-        throw new \Exception("DBhandler received to long array. Only id is needed.");
-      else
-        foreach($idArray as $key => $val) {
-          $this->dbh->setIncomingIdColumn($key);
-          $this->dbh->setIncomingIdValue($val);
-        }
+      // Reading or deleting a post
+      $this->setIdColumnNameAndValue($incData);
     }
       
   }
 
-  private function itIsAPost($incData) {
-    $namespc = STR::INCNAMESPACE;
-    $qury = (get_class($incData) == "{$namespc}StorePost");
-    return $qury;
+  private function setIdColumnNameAndValue($incData){
+    
+    $idArray = $this->getIdArrayFrom($incData); 
+    
+    if($this->arrayHasMaxOneItem($idArray) == false)
+      throw new \Exception("DBhandler received to long array. Only id is needed.");
+    
+    $this->dbh->setIncomingIdColumn(array_keys($idArray)[0]);
+    $this->dbh->setIncomingIdValue(array_values($idArray)[0]);
+    
   }
 
-  private function itIsAnUpdate($incData) {
-    $namespc = STR::INCNAMESPACE;
-    $qury = (get_class($incData) == "{$namespc}UpdatePost");
-    return $qury;
+  private function incDataIsOf_StorePostClass($incData) {
+    return get_class($incData) == STR::INCNAMESPACE."StorePost";
+  }
+
+  private function incDataIsOf_UpdatePostClass($incData) {
+    return get_class($incData) == STR::INCNAMESPACE . "UpdatePost";
   }
 
   private function itIsAnId($incData) {
     return isset($incData->{$this->dbh::ARRAYWITHID});
-    // $namespc = \STR::INCNAMESPACE;
-    // $qury = (get_class($this->incData) == "{$namespc}GetPostWithId");
-    // return $qury;
   }
 
+  private function getIdArrayFrom($incData){
+    return $incData->{$this->dbh::ARRAYWITHID};
+  }
 
   private function arrayHasMaxOneItem(array $arr) {
     return sizeof($arr) == 1;

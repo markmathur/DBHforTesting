@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 require './DBhandler1_1/DBhandler.php';
 require './DBhandler1_1/incomingDataClasses/UpdatePost.php';
 require './DBhandler1_1/incomingDataClasses/StorePost.php';
+require './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
 
 
 final class UnpackerTest extends TestCase {
@@ -76,6 +77,21 @@ final class UnpackerTest extends TestCase {
     );
   }
 
+  public function testExtractOnlyIdKeyAndValue() {
+    $mockDBH = $this->mockUnpack_GetPostById_Request();
+
+    $this->assertEquals(
+      'card_id',
+      $mockDBH->getIncomingIdColumn()
+    );
+
+    $this->assertEquals(
+      '10',
+      $mockDBH->getIncomingIdValue()
+    );
+
+  }
+
 
   // ** The updatePost execution **
 
@@ -122,6 +138,22 @@ final class UnpackerTest extends TestCase {
     $mockDbh = $this->unpackAndUpdateMockedDBH($mockIncData);
 
     return $mockDbh; // The results are stored in this object, thanks to dependency injection.
+  }
+
+  // ** GetPostById execution **
+  private function mockUnpack_GetPostById_Request() {
+      
+    $mockIncData = new GetPostWithId(
+      'flashcardapp', 
+      'tbl_flashcard',
+      array(
+        'card_id' => '10'
+      )
+    );
+
+    $mockDbh = $this->unpackAndUpdateMockedDBH($mockIncData);
+
+    return $mockDbh;    
   }
   
 }
