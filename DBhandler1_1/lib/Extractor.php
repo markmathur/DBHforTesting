@@ -46,6 +46,17 @@ class Extractor {
     $this->dbh->setStringOfValues($this->stringOfValues);
   }
 
+  public function setIdColumnNameAndValue($incData){
+    
+    $idArray = $this->getIdArrayFrom($incData); 
+    
+    if($this->arrayHasMaxOneItem($idArray) == false)
+      throw new \Exception("DBhandler received to long array. Only id is needed.");
+    
+    $this->dbh->setIncomingIdColumn(array_keys($idArray)[0]);
+    $this->dbh->setIncomingIdValue(array_values($idArray)[0]);
+    
+  }
 
   // *** PRIVATE METHODS ***
 
@@ -57,8 +68,16 @@ class Extractor {
     $this->dbh->setTable($this->incData->{$this->dbh::TABLE});
   }
 
-
   public static function takeAwayTrailingComa(&$str) {
     $str = rtrim($str, ", ");
   }
+
+  private function getIdArrayFrom($incData){
+    return $incData->{$this->dbh::ARRAYWITHID};
+  }
+
+  private function arrayHasMaxOneItem(array $arr) {
+    return sizeof($arr) == 1;
+  }
+
 }
