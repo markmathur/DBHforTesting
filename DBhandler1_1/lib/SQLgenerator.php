@@ -17,7 +17,7 @@ class SQLgenerator{
   }
 
   public function SQL_getPostWithId() {
-    return "SELECT * FROM $this->dbh->table WHERE $this->dbh->incomingIdColumn = '$this->dbh->incomingIdValue';";
+    return "SELECT * FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingIdColumn()} = '{$this->dbh->getIncomingIdValue()}';";
   }
 
   public function SQL_getAllPosts() {

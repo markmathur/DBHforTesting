@@ -99,6 +99,7 @@ class DBhandler {
   function getPostWithId(GetPostWithId $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
     $sql = $this->sqlGen->SQL_getPostWithId(); 
+    
     $rawData = $this->performDBcall($dbConn, $sql);
     $postAsArray = $this->getPostAsArray($rawData);
     $dbConn->close();

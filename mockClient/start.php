@@ -13,6 +13,7 @@ require_once './DBhandler1_1/lib/Unpacker.php';
 require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
 require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
 require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
+require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
 require_once './ENV.php';
 
 
@@ -25,15 +26,19 @@ function getUsers() {
 
   $dbh = new DBhandler();
 
-  $dataObj = new \DBhandler\StorePost('flashcardapp', 'tbl_flashcard', array('text1' => 'Second', 'text2' => 'Andra', 'user' => 2));
+  // $dataObj = new \DBhandler\StorePost('flashcardapp', 'tbl_flashcard', array('text1' => 'Second', 'text2' => 'Andra', 'user' => 2));
   // $success = $dbh->storePost($dataObj);
   // var_dump($success);  
 
-  $unpacker = new \DBhandler\Unpacker($dbh);
-  $unpacker->unpackIncomingDataArray($dataObj);
-  var_dump($dbh);
+  // $unpacker = new \DBhandler\Unpacker($dbh);
+  // $unpacker->unpackIncomingDataArray($dataObj);
+  // var_dump($dbh);
 
   // $dataObj = new GetAllPosts(STR::USERDB, STR::USERTBL);
   // $allPosts = $dbh->getAllPosts($dataObj);
   // var_dump($allPosts);
+
+  $dataObj = new \DBhandler\GetPostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => '10; select * from tbl_flashcard --'));
+  $post = $dbh->getPostWithId($dataObj);
+  var_dump($post);
 }
