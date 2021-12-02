@@ -99,7 +99,6 @@ class DBhandler {
   function getPostWithId(GetPostWithId $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
     $sql = $this->sqlGen->SQL_getPostWithId(); 
-    
     $rawData = $this->performDBcall($dbConn, $sql);
     $postAsArray = $this->getPostAsArray($rawData);
     $dbConn->close();
@@ -167,8 +166,7 @@ class DBhandler {
   private function performDBcall($dbConn, $sql) {
     try {
       
-      $result = mysqli_query($dbConn, $sql);
-      var_dump($result);
+      $result = mysqli_query($dbConn, $sql); // For security reasons, mysqli_query will not execute multiple queries to prevent SQL injections.
       return $result;
     }
     catch (\Exception $e) {
@@ -179,9 +177,6 @@ class DBhandler {
   private function getPostAsArray($rawData) {
     // used by READING functions, after they have fetched the "row" from the database.
     if(mysqli_num_rows($rawData) > 0) {
-      // while ($row = mysqli_fetch_assoc($result)) {
-      //   var_dump($row);
-      // }
       $postAsArray = mysqli_fetch_assoc($rawData);
       return $postAsArray;
     }
@@ -195,16 +190,6 @@ class DBhandler {
 
     return $allRowsArray;
   }
-
-  // SQL generators
-
-
-
-  // Extraction functions
-
-
-
-
 
 }
 
