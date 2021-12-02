@@ -38,7 +38,7 @@ function getUsers() {
   // $allPosts = $dbh->getAllPosts($dataObj);
   // var_dump($allPosts);
 
-  $dataObj = new \DBhandler\GetPostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => '10; select * from tbl_flashcard --'));
+  $dataObj = new \DBhandler\GetPostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => '10; DROP TABLE tbl_test --'));
   $post = $dbh->getPostWithId($dataObj);
   var_dump($post);
 }

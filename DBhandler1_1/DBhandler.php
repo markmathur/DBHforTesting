@@ -166,7 +166,10 @@ class DBhandler {
 
   private function performDBcall($dbConn, $sql) {
     try {
-      return mysqli_query($dbConn, $sql);
+      
+      $result = mysqli_query($dbConn, $sql);
+      var_dump($result);
+      return $result;
     }
     catch (\Exception $e) {
       echo $e->getMessage();
