@@ -5,11 +5,13 @@ namespace DBhandler;
 use DBhandler\DBhandler;
 use PHPUnit\Framework\TestCase;
 
-// require_once './DBhandler1_1/lib/Unpacker.php';
-require './DBhandler1_1/DBhandler.php';
-require './DBhandler1_1/incomingDataClasses/UpdatePost.php';
-require './DBhandler1_1/incomingDataClasses/StorePost.php';
-require './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
+
+// require './DBhandler1_1/DBhandler.php';
+// require './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
+// require './DBhandler1_1/incomingDataClasses/UpdatePost.php';
+// require './DBhandler1_1/incomingDataClasses/StorePost.php';
+// require './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
+// require './DBhandler1_1/incomingDataClasses/GetPostsByCritera.php';
 
 
 final class UnpackerTest extends TestCase {

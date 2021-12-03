@@ -9,7 +9,7 @@
   - Then
     - **DONE** Break out stuff from Unpacker, and write UNIT-tests for that.  
     - To test that storing stuff would work, we can first break out an SQL-generator, and then send stuff into that and see that the right SQL is written. 
-    - *NOW* We have a test `testSQL_avoidInjectionAttacks` that show `fail` until we have extinguished the risk if injection attacks.
+    - *NOW* Read what vulnerabilities exist. SQL injection doesn't seem to be a risk. 
 
 ## Later
 - STR.php should not be in DBhandler-folder. It is environmental. 

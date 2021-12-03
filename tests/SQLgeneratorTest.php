@@ -23,40 +23,6 @@ class SQLgeneratorTest extends TestCase {
       $gen->SQL_getPostWithId()
     );
 
-    // $this->dbh->setIncomingIdValue('10; select * FROM tbl_database --');
-
-    // $this->assertEquals(
-    //   "SELECT * FROM tbl_flashcard WHERE card_id = '10';",
-    //   $gen->SQL_getPostWithId()
-    // );
-
   }
-
-  // public function testSQL_avoidInjectionAttacks() {
-  //   $this->dbh = new MockDBH();
-
-  //   $dataObj = new GetPostWithId(
-  //     'flashcardapp', 
-  //     'tbl_flashcard',
-  //     array(
-  //       'card_id' => '10; select * from tbl_flashcard --'
-  //     )
-  //   );
-
-  //   $postAsArray = $this->dbh->getPostWithId($dataObj);
-
-  //   $this->assertIsArray($postAsArray);
-  //   $this->assertEquals(
-  //     'blow',
-  //     $postAsArray['text1']
-  //   );
-
-  //   $gen = new SQLgenerator($this->dbh);
-
-  //   $this->assertNotEquals(
-  //     "SELECT * FROM tbl_flashcard WHERE card_id = '10; select * from tbl_flashcard --';",
-  //     $gen->SQL_getPostWithId()
-  //   );
-  // }
 
 }

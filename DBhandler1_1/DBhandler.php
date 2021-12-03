@@ -114,7 +114,7 @@ class DBhandler {
     return $postAsArray;
   }
 
-  function getPostsByCriteria(GetPostWithId $dbParametersAndId) {
+  function getPostsByCriteria(GetPostsByCriteria $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
     $sql = $this->sqlGen->SQL_getPostWithId(); 
     $rawData = $this->performDBcall($dbConn, $sql);
