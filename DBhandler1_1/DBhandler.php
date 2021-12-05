@@ -17,6 +17,7 @@ require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
 require_once './ENV.php';
 require_once './DBhandler1_1/lib/Unpacker.php';
 require_once './DBhandler1_1/lib/SQLgenerator.php';
+require_once './DBhandler1_1/lib/StmtHandler.php';
 
 class DBhandler {
 
@@ -52,10 +53,12 @@ class DBhandler {
   // SUPPORTING LIB
 
   private $sqlGen;
+  private $stmtGen;
 
   function __construct()
   {
     $this->sqlGen = new SQLgenerator($this);
+    $this->stmtHandler = new StmtHandler($this);
   }
 
   // *** GETTERS AND SETTERS ***
@@ -98,23 +101,9 @@ class DBhandler {
   }
 
   function getPostWithId(GetPostWithId $dbParametersAndId) {
-
-    $unpacker = new Unpacker($this);
-    $unpacker->unpackIncomingDataArray($dbParametersAndId);
-    $dbConn = new mysqli(\ENV::dbServer, \ENV::dbUsername, \ENV::dbPassword, $this->database);
-    if(!$dbConn) {
-      throw new \Exception('Can not establish connection to database.', 500);
-    }
-
-    $stmt = $dbConn->prepare("SELECT * FROM {$this->table} WHERE {$this->incomingIdColumn} = ?");
-    $stmt->bind_param("s", $id);
-    $id = $this->incomingIdValue;
-    $stmt->execute();
-    $postAsArray = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-    $dbConn->close();
+    $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
+    $postAsArray = $this->stmtHandler->getPostWithId($dbConn);
     return $postAsArray;
-    
   }
 
   function getAllPosts(GetAllPosts $dbParameters) {
