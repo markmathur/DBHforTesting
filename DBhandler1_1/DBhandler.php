@@ -10,6 +10,7 @@ use DBhandler\ExecSQLstatement;
 use DBhandler\GetPostWithId;
 use DBhandler\StorePost;
 use mysqli;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 require('STR.php');
 require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
@@ -97,12 +98,23 @@ class DBhandler {
   }
 
   function getPostWithId(GetPostWithId $dbParametersAndId) {
-    $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
-    $sql = $this->sqlGen->SQL_getPostWithId(); 
-    $rawData = $this->performDBcall($dbConn, $sql);
-    $postAsArray = $this->getPostAsArray($rawData);
+
+    $unpacker = new Unpacker($this);
+    $unpacker->unpackIncomingDataArray($dbParametersAndId);
+    $dbConn = new mysqli(\ENV::dbServer, \ENV::dbUsername, \ENV::dbPassword, $this->database);
+    if(!$dbConn) {
+      throw new \Exception('Can not establish connection to database.', 500);
+    }
+
+    $stmt = $dbConn->prepare("SELECT * FROM {$this->table} WHERE {$this->incomingIdColumn} = ?");
+    $stmt->bind_param("s", $id);
+    $id = $this->incomingIdValue;
+    $stmt->execute();
+    $postAsArray = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
     $dbConn->close();
     return $postAsArray;
+    
   }
 
   function getAllPosts(GetAllPosts $dbParameters) {

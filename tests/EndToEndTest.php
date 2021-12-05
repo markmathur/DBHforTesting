@@ -26,10 +26,29 @@ final class EndToEndTest extends TestCase {
 
     $this->assertEquals(
       'Second',
-      $dbh->getPostWithId($dataObj)['text1']
+      $dbh->getPostWithId($dataObj)[0]['text1']
     );
 
   }
+
+  public function testGetNonExistingRowById() {
+    $dbh = new DBhandler();
+
+    $dataObj = new GetPostWithId(
+      'flashcardapp', 
+      'tbl_flashcard',
+      array(
+        'card_id' => '2'
+      )
+    );
+
+    // $this->assertIsArray($dbh->getPostWithId($dataObj));
+
+    $this->assertSameSize(
+      array(),
+      $dbh->getPostWithId($dataObj)
+    );
+  } 
 
   public function testGetCardByCriteria() {
 
