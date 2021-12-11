@@ -21,7 +21,7 @@ class SQLgenerator{
   }
 
   public function SQL_getAllPosts() {
-    return "SELECT * FROM $this->dbh->table;";
+    return "SELECT * FROM {$this->dbh->getTable()};";
   }
 
   public function SQL_deletePostWithId() {

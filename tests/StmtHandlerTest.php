@@ -2,6 +2,7 @@
 
 namespace DBhandler;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use PHPUnit\Framework\TestCase;
 use RangeException;
 
@@ -44,21 +45,31 @@ class StmtHandlerTest extends TestCase {
     );
   }
 
-  public function testGetTypesOfValues() {
+  // public function testGetTypesOfValues() {
     
+  //   $postData = array(
+  //     "col1" => "one",
+  //     "col2" => 256,
+  //     "col3" => false
+  //   );
+
+  //   $this->assertEquals(
+  //     "s",
+  //     $this->stmtHandler->getTypesOfValues($postData)["col1"]->getType()
+  //   );
+
+  // }
+
+  public function testGetStrOfTypeInitials() {
     $postData = array(
       "col1" => "one",
       "col2" => 256,
       "col3" => false
     );
-
     $this->assertEquals(
-      array(
-        "col1" => )
-      ),
-      $this->stmtHandler->getTypesOfValues($postData)
+      'sib',
+      $this->stmtHandler->getStrOfTypeInitials($postData)
     );
-
   }
 
   protected function tearDown(): void

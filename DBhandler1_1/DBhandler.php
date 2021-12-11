@@ -50,6 +50,8 @@ class DBhandler {
   private string $stringOfColumns;
   private string $stringOfValues;
 
+  private array $postData;
+
   // SUPPORTING LIB
 
   private $sqlGen;
@@ -87,17 +89,21 @@ class DBhandler {
   function setStringOfValues( string $sov) {$this->stringOfValues = $sov;}
   function getStringOfValues() {return $this->stringOfValues; }
 
+  function setPostData(array $pd) {$this->postData = $pd;}
+  function getPostData() {return $this->postData;}
+
 
   // *** PUBLIC METHODS ***
   function storePost(StorePost $dbParametersAndPostData) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndPostData);
-    $sql = $this->sqlGen->SQL_storePost(); 
-    var_dump($sql);
-    $success = $this->performDBcall($dbConn, $sql);
-    var_dump(mysqli_error_list($dbConn));
+    // $sql = $this->sqlGen->SQL_storePost(); 
+    // $success = $this->performDBcall($dbConn, $sql);
+    $this->stmtHandler->storePost($dbConn, $this->postData);
     
-    $dbConn->close();
-    return $success;
+    // $dbConn->close();
+    // return $success;
+
+    return true;
   }
 
   function getPostWithId(GetPostWithId $dbParametersAndId) {

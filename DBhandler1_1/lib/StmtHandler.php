@@ -27,27 +27,26 @@ class StmtHandler {
 
     $preparedStatement = $this->makePreparedStatementForStorePost($postData);
     $stmt = $dbConn->prepare($preparedStatement);
-    
-    
-    
+    $this->bindParametersFromArray($stmt, $postData);
+    $stmt->execute();
+    $stmt->close();
+    $dbConn->close();
 
   }
 
-  public function getTypesOfValues() {
+  public function bindParametersFromArray($stmt, array $postData) {
 
+    $strOfTypes = $this->getStrOfTypeInitials($postData);
+    var_dump($strOfTypes, ...['uno' => 'Hej', 'duo' => 'Du']);
+    $listOfVals = array_values($postData);
+    $stmt->bind_param($strOfTypes, ...$listOfVals);
   }
-
-  // public function bindParamametersFromArray($stmt, array $post) {
-    
-    
-  //   $stmt->bind_param()
-  // }
 
   public function makePreparedStatementForStorePost(array $postData) {
 
     $rowOfQmarks = $this->getStringOfQmarks(sizeof($postData));
     $str = "INSERT INTO {$this->dbh->getTable()} ({$this->dbh->getStringOfColumns()}) VALUES ($rowOfQmarks);";
-
+  var_dump($str);
     return $str;
   }
 
@@ -60,6 +59,16 @@ class StmtHandler {
     $this->takeAwayTrailingComa($rowOfQmarks);
     
     return $rowOfQmarks;
+  }
+
+  public function getStrOfTypeInitials($postData) {
+    $str = '';
+
+    foreach($postData as $col => $val) {
+      $str .= substr(gettype($val), 0, 1);
+    }
+
+    return $str;
   }
 
   public static function takeAwayTrailingComa(&$str) {
@@ -75,7 +84,7 @@ class ValueWithType {
   public function __construct($value)
   {
     $this->value = $value;
-    $this->type = gettype($value);
+    $this->type =substr(gettype($value), 0, 1);
   }
 
   public function getValue() {

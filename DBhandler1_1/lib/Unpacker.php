@@ -25,6 +25,7 @@ class Unpacker {
       // Creating a new post
       $xtractor->extractColumns($incData);
       $xtractor->extractValues($incData);
+      $xtractor->extractPostDataAsArray($incData);
 
     }
     else if($this->incDataIsOf_UpdatePostClass($incData)) {
