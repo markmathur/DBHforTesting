@@ -36,6 +36,10 @@ class Extractor {
     $this->dbh->setStringOfColumns($this->stringOfColumns);
   }
 
+  // public function extractColumnsToArray($incData) {
+
+  // }
+
   public function extractValues($incData) {
     foreach($incData->{$this->dbh::POSTDATA} as $col => $val) {
       $this->stringOfValues .= "'{$val}', ";

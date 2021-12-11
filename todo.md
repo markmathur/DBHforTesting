@@ -9,7 +9,10 @@
   - Then
     - **DONE** Break out stuff from Unpacker, and write UNIT-tests for that.  
     - To test that storing stuff would work, we can first break out an SQL-generator, and then send stuff into that and see that the right SQL is written. 
-    - *NOW* Read what vulnerabilities exist. SQL injection doesn't seem to be a risk. 
+    - **DONE** ** Read what vulnerabilities exist. SQL injection doesn't seem to be a risk. 
+- Implement prepared SQL statements
+  - **DONE** Start off with `GetPostWithId()` because it is does not effect the database with testing.
+  - *NOW*  `Do StorePost()` - this is harder, because `Extractor` returns a string for the SQL-statement, and we now want separate column names and values. 
 
 ## Later
 - STR.php should not be in DBhandler-folder. It is environmental. 
