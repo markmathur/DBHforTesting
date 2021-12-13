@@ -2,6 +2,9 @@
 
 namespace DBhandler;
 
+use mysqli_stmt;
+use PhpParser\Node\Stmt;
+
 class StmtHandler {
 
   private $dbh;
@@ -11,15 +14,19 @@ class StmtHandler {
     $this->dbh = $dBhandler;
   }
 
+  // *** MAIN METHODS ***
+
   public function getPostWithId($dbConn) {
-    // $id='';
+    
     $stmt = $dbConn->prepare("SELECT * FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingIdColumn()} = ?");
+    $id='';
     $stmt->bind_param("s", $id);
     $id = $this->dbh->getIncomingIdValue();
     $stmt->execute();
     $postAsArray = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     $dbConn->close();
+
     return $postAsArray;
   }
 
@@ -27,30 +34,54 @@ class StmtHandler {
 
     $preparedStatement = $this->makePreparedStatementForStorePost($postData);
     $stmt = $dbConn->prepare($preparedStatement);
-    $this->bindParametersFromArray($stmt, $postData);
-    $stmt->execute();
+    $this->bindParameters($stmt, $postData);
+
+    $success = $stmt->execute();
     $stmt->close();
     $dbConn->close();
 
+    return $success;
   }
 
-  public function bindParametersFromArray($stmt, array $postData) {
+  public function updatePost(\mysqli $dbConn, array $postData) {
 
-    $strOfTypes = $this->getStrOfTypeInitials($postData);
-    var_dump($strOfTypes, ...['uno' => 'Hej', 'duo' => 'Du']);
+    $preparedStatement = $this->makePreparedStatementForUpdatePost($postData);
+    $stmt = $dbConn->prepare($preparedStatement);
+    $arrOfParameters = $this->makeArrayOfParametersForUpdatePost($postData);
+    $this->bindParameters($stmt, $arrOfParameters);
+    $success = $stmt->execute();
+    $stmt->close();
+    $dbConn->close();
+
+    return $success;
+  }
+
+  // *** END MAIN METHODS ***
+
+
+  // *** SUPPORTING METHODS
+  
+  public function makePreparedStatementForStorePost(array $postData) {
+    $rowOfQmarks = $this->getStringOfQmarks(sizeof($postData));
+    $str = "INSERT INTO {$this->dbh->getTable()} ({$this->dbh->getStringOfColumns()}) VALUES ($rowOfQmarks);";
+
+    return $str;
+  }
+
+  public function makePreparedStatementForUpdatePost(array $postData) {
+    $colValString = $this->makeColValString($postData);
+    $str = "UPDATE {$this->dbh->getTable()} SET {$colValString} WHERE {$this->dbh->getIncomingIdColumn()} = ?;";
+
+    return $str;
+  }
+
+  private function bindParameters(mysqli_stmt $stmt, array $postData) {
+    $strOfTypes = $this->getStrOfTypeInitials($postData); // Like "ssis"
     $listOfVals = array_values($postData);
     $stmt->bind_param($strOfTypes, ...$listOfVals);
   }
 
-  public function makePreparedStatementForStorePost(array $postData) {
-
-    $rowOfQmarks = $this->getStringOfQmarks(sizeof($postData));
-    $str = "INSERT INTO {$this->dbh->getTable()} ({$this->dbh->getStringOfColumns()}) VALUES ($rowOfQmarks);";
-  var_dump($str);
-    return $str;
-  }
-
-  public function getStringOfQmarks(int $numberOfValues) {
+  private function getStringOfQmarks(int $numberOfValues) {
 
     if($numberOfValues < 1)
       throw new \Exception('Argument must not be < 1.');
@@ -61,7 +92,7 @@ class StmtHandler {
     return $rowOfQmarks;
   }
 
-  public function getStrOfTypeInitials($postData) {
+  private function getStrOfTypeInitials($postData) {
     $str = '';
 
     foreach($postData as $col => $val) {
@@ -71,7 +102,25 @@ class StmtHandler {
     return $str;
   }
 
-  public static function takeAwayTrailingComa(&$str) {
+  public function makeArrayOfParametersForUpdatePost($postData) {
+    $arr = $postData;
+    $arr[$this->dbh->getIncomingIdColumn()] = $this->dbh->getIncomingIdValue();
+    return $arr;
+  }
+
+  private function makeColValString($postData) {
+    $str = '';
+
+    foreach($postData as $col => $val) {
+      $str .= "$col = ?, ";
+    }
+
+    $this->takeAwayTrailingComa($str);
+
+    return $str;
+  }
+
+  private static function takeAwayTrailingComa(&$str) {
     $str = rtrim($str, ", ");
   }
 

@@ -12,7 +12,7 @@ use DBhandler\StorePost;
 use mysqli;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
-require('STR.php');
+require_once 'STR.php';
 require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
 require_once './ENV.php';
 require_once './DBhandler1_1/lib/Unpacker.php';
@@ -98,12 +98,12 @@ class DBhandler {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndPostData);
     // $sql = $this->sqlGen->SQL_storePost(); 
     // $success = $this->performDBcall($dbConn, $sql);
-    $this->stmtHandler->storePost($dbConn, $this->postData);
+    $success = $this->stmtHandler->storePost($dbConn, $this->postData);
     
     // $dbConn->close();
     // return $success;
 
-    return true;
+    return $success;
   }
 
   function getPostWithId(GetPostWithId $dbParametersAndId) {
@@ -114,7 +114,7 @@ class DBhandler {
 
   function getAllPosts(GetAllPosts $dbParameters) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParameters);
-    $sql = $this->sqlGen->SQL_getAllPosts(); 
+    $sql = "SELECT * FROM {$this->getTable()};";
     $rawData = $this->performDBcall($dbConn, $sql);
     $postAsArray = $this->getAllPostsAsArray($rawData);
     $dbConn->close();
@@ -132,9 +132,10 @@ class DBhandler {
 
   function updatePost(UpdatePost $dbParametersAndUpdatedPost) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndUpdatedPost);
-    $sql = $this->sqlGen->SQL_updatePost();
-    $success = $this->performDBcall($dbConn, $sql);
-    $dbConn->close();
+    // $sql = $this->sqlGen->SQL_updatePost();
+    // $success = $this->performDBcall($dbConn, $sql);
+    // $dbConn->close();
+    $success = $this->stmtHandler->updatePost($dbConn, $this->postData);
     return $success;
   }
 

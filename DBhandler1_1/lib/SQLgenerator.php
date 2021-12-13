@@ -20,12 +20,8 @@ class SQLgenerator{
     return "SELECT * FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingIdColumn()} = '{$this->dbh->getIncomingIdValue()}';";
   }
 
-  public function SQL_getAllPosts() {
-    return "SELECT * FROM {$this->dbh->getTable()};";
-  }
-
   public function SQL_deletePostWithId() {
-    return "DELETE FROM $this->dbh->table WHERE $this->dbh->incomingIdColumn = $this->dbh->incomingIdValue;";
+    return "DELETE FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingIdColumn()} = {$this->dbh->getIncomingIdValue()};";
   }
 
   public function SQL_updatePost() {

@@ -32,6 +32,7 @@ class Unpacker {
       // Updating a current post
       $xtractor->setIdColumnNameAndValue($incData);
       $this->dbh->setIncomingUpdateDataAsArray($incData->{$this->dbh::POSTDATA});
+      $xtractor->extractPostDataAsArray($incData);
     }
     else if($this->itIsAnId($incData)) {
       // Reading or deleting a post

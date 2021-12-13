@@ -15,60 +15,33 @@ class StmtHandlerTest extends TestCase {
 
     $this->dbh->setTable('Tbl_example');
     $this->dbh->setStringOfColumns('col1, col2');
-  }
-  
-  public function testGetStringOfQmarks() {
-
-    $this->assertEquals(
-      "?, ?, ?",
-      $this->stmtHandler->getStringOfQmarks(3)
-    );
-
-    $this->assertEquals(
-      '?',
-      $this->stmtHandler->getStringOfQmarks(1)
-    );
-
-    $this->expectException(\Exception::class);
-    $this->stmtHandler->getStringOfQmarks(0);
-  }
-
-  public function testMakePreparedStatementForStorePost() {
-    $postData = array(
+    $this->dbh->setIncomingIdColumn('id');
+    $this->dbh->setIncomingIdValue('10');
+    $this->postData = array(
       "col1" => "one",
       "col2" => "two"
     );
+  }
+
+  public function testMakePreparedStatementForStorePost() {
 
     $this->assertEquals(
       "INSERT INTO Tbl_example (col1, col2) VALUES (?, ?);",
-      $this->stmtHandler->makePreparedStatementForStorePost($postData)
+      $this->stmtHandler->makePreparedStatementForStorePost($this->postData)
     );
   }
 
-  // public function testGetTypesOfValues() {
-    
-  //   $postData = array(
-  //     "col1" => "one",
-  //     "col2" => 256,
-  //     "col3" => false
-  //   );
-
-  //   $this->assertEquals(
-  //     "s",
-  //     $this->stmtHandler->getTypesOfValues($postData)["col1"]->getType()
-  //   );
-
-  // }
-
-  public function testGetStrOfTypeInitials() {
-    $postData = array(
-      "col1" => "one",
-      "col2" => 256,
-      "col3" => false
-    );
+  public function testMakePreparedStatementForUpdatePost() {
     $this->assertEquals(
-      'sib',
-      $this->stmtHandler->getStrOfTypeInitials($postData)
+      "UPDATE Tbl_example SET col1 = ?, col2 = ? WHERE id = ?;",
+      $this->stmtHandler->makePreparedStatementForUpdatePost($this->postData)
+    );
+  }
+
+  public function testMakeArrayOfParameters() {
+    $this->assertEquals(
+      array('col1' => 'one', 'col2' => 'two', 'id' => '10'),
+      $this->stmtHandler->makeArrayOfParametersForUpdatePost($this->postData)
     );
   }
 

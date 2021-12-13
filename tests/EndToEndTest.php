@@ -7,14 +7,18 @@ use PHPUnit\Framework\TestCase;
 require_once './DBhandler1_1/DBhandler.php';
 require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
 require_once './DBhandler1_1/incomingDataClasses/GetPostsByCritera.php';
+require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
 require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
 require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
 
 final class EndToEndTest extends TestCase {
 
-  public function testGetCardWithId() {
+  protected function setUp(): void 
+  {
+    $this->dbh = new DBhandler();
+  }
 
-    $dbh = new DBhandler();
+  public function testGetPostWithId_returnsPost1() {
 
     $dataObj = new GetPostWithId(
       'flashcardapp', 
@@ -26,13 +30,12 @@ final class EndToEndTest extends TestCase {
 
     $this->assertEquals(
       'Second',
-      $dbh->getPostWithId($dataObj)[0]['text1']
+      $this->dbh->getPostWithId($dataObj)[0]['text1']
     );
 
   }
 
-  public function testGetNonExistingRowById() {
-    $dbh = new DBhandler();
+  public function testGetPostWithId_failsToReturnNonExistantPost2() {
 
     $dataObj = new GetPostWithId(
       'flashcardapp', 
@@ -46,13 +49,11 @@ final class EndToEndTest extends TestCase {
 
     $this->assertSameSize(
       array(),
-      $dbh->getPostWithId($dataObj)
+      $this->dbh->getPostWithId($dataObj)
     );
   } 
 
-  public function testGetCardByCriteria() {
-
-    $dbh = new DBhandler();
+  public function testGetPostByCriteria_getsPost1() {
 
     $dataObj = new GetPostsByCriteria(
       'flashcardapp', 
@@ -64,9 +65,29 @@ final class EndToEndTest extends TestCase {
 
     $this->assertEquals(
       'Second',
-      $dbh->getPostsByCriteria($dataObj)[0]['text1']
+      $this->dbh->getPostsByCriteria($dataObj)[0]['text1']
     );
 
+  }
+
+  public function testGetAllPosts_givesArray() {
+    $this->assertIsArray(
+      $this->dbh->getAllPosts($this->getAllPostsDataObj())
+    );
+  }
+
+  public function testArrayFrom_GetAllPosts_isNotEmpty() {
+    $this->assertNotSameSize(
+      array(),
+      $this->dbh->getAllPosts($this->getAllPostsDataObj())
+    );
+  }
+
+  private function getAllPostsDataObj() {
+    return new GetAllPosts(
+      'flashcardapp', 
+      'tbl_flashcard'
+    );
   }
 
   

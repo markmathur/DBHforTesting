@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 class SQLgeneratorTest extends TestCase {
 
-
   public function testSQL_getPostWithId() {
     $this->dbh = new MockDBH();
 
