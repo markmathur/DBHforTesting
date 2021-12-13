@@ -41,7 +41,7 @@ final class UnpackerTest extends TestCase {
 
     $this->assertEquals(
       'card_id',
-      $mockDbh->getIncomingIdColumn()
+      $mockDbh->getIncomingCritColumn()
     );
   }
 
@@ -50,7 +50,7 @@ final class UnpackerTest extends TestCase {
 
     $this->assertEquals(
       '1',
-      $mockDbh->getIncomingIdValue()
+      $mockDbh->getIncomingCritValue()
     );
   }
 
@@ -84,12 +84,12 @@ final class UnpackerTest extends TestCase {
 
     $this->assertEquals(
       'card_id',
-      $mockDBH->getIncomingIdColumn()
+      $mockDBH->getIncomingCritColumn()
     );
 
     $this->assertEquals(
       '10',
-      $mockDBH->getIncomingIdValue()
+      $mockDBH->getIncomingCritValue()
     );
 
   }

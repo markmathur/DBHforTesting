@@ -4,7 +4,7 @@ namespace DBhandler;
 
 use DBhandler\DBhandler;
 
-class Mother_targetPostWithId {
+class Mother_targetPostWithOneCriteria {
 
   // The properties are not declared beforehand. The design below $this->{DBhandler::DATABASE}
   // requires that they are declared at instantiation. 

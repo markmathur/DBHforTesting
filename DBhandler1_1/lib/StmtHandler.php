@@ -18,10 +18,25 @@ class StmtHandler {
 
   public function getPostWithId($dbConn) {
     
-    $stmt = $dbConn->prepare("SELECT * FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingIdColumn()} = ?");
+    $stmt = $dbConn->prepare("SELECT * FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingCritColumn()} = ?");
     $id='';
     $stmt->bind_param("s", $id);
-    $id = $this->dbh->getIncomingIdValue();
+    $id = $this->dbh->getIncomingCritValue();
+    $stmt->execute();
+    $postAsArray = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    $dbConn->close();
+
+    return $postAsArray;
+  }
+
+  public function getPostsByCriteria($dbConn) {
+    
+
+    $stmt = $dbConn->prepare("SELECT * FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingCritColumn()} = ?");
+    $crit = '';
+    $stmt->bind_param("s", $crit);
+    $crit = $this->dbh->getIncomingCritValue();
     $stmt->execute();
     $postAsArray = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
@@ -56,6 +71,8 @@ class StmtHandler {
     return $success;
   }
 
+
+
   // *** END MAIN METHODS ***
 
 
@@ -70,7 +87,7 @@ class StmtHandler {
 
   public function makePreparedStatementForUpdatePost(array $postData) {
     $colValString = $this->makeColValString($postData);
-    $str = "UPDATE {$this->dbh->getTable()} SET {$colValString} WHERE {$this->dbh->getIncomingIdColumn()} = ?;";
+    $str = "UPDATE {$this->dbh->getTable()} SET {$colValString} WHERE {$this->dbh->getIncomingCritColumn()} = ?;";
 
     return $str;
   }
@@ -104,7 +121,7 @@ class StmtHandler {
 
   public function makeArrayOfParametersForUpdatePost($postData) {
     $arr = $postData;
-    $arr[$this->dbh->getIncomingIdColumn()] = $this->dbh->getIncomingIdValue();
+    $arr[$this->dbh->getIncomingCritColumn()] = $this->dbh->getIncomingCritValue();
     return $arr;
   }
 

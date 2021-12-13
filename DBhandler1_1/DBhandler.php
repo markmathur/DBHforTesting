@@ -13,7 +13,7 @@ use mysqli;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 require_once 'STR.php';
-require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithId.php';
+require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithOneCriteria.php';
 require_once './ENV.php';
 require_once './DBhandler1_1/lib/Unpacker.php';
 require_once './DBhandler1_1/lib/SQLgenerator.php';
@@ -40,8 +40,8 @@ class DBhandler {
 
   // PROPERTIES
 
-  private string $incomingIdColumn;
-  private string $incomingIdValue;
+  private string $incomingCritColumn;
+  private string $incomingCritValue;
   private array $incomingUpdateDataAsArray; // This is used by updatePost(). It might be possible to switch it out for $stringOfColumns and $stringOfValues.
 
   private string $database;
@@ -71,12 +71,12 @@ class DBhandler {
   function getTable() {return $this->table;}
 
 
-  function setIncomingIdColumn(string $col) {$this->incomingIdColumn = $col;}
-  function getIncomingIdColumn() {return $this->incomingIdColumn;}
+  function setIncomingCritColumn(string $col) {$this->incomingCritColumn = $col;}
+  function getIncomingCritColumn() {return $this->incomingCritColumn;}
 
 
-  function setIncomingIdValue(string $val) {$this->incomingIdValue = $val;}
-  function getIncomingIdValue() {return $this->incomingIdValue;}
+  function setIncomingCritValue(string $val) {$this->incomingCritValue = $val;}
+  function getIncomingCritValue() {return $this->incomingCritValue;}
 
 
   function setIncomingUpdateDataAsArray(array $arr) {$this->incomingUpdateDataAsArray = $arr;}
@@ -96,12 +96,7 @@ class DBhandler {
   // *** PUBLIC METHODS ***
   function storePost(StorePost $dbParametersAndPostData) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndPostData);
-    // $sql = $this->sqlGen->SQL_storePost(); 
-    // $success = $this->performDBcall($dbConn, $sql);
     $success = $this->stmtHandler->storePost($dbConn, $this->postData);
-    
-    // $dbConn->close();
-    // return $success;
 
     return $success;
   }
@@ -109,6 +104,7 @@ class DBhandler {
   function getPostWithId(GetPostWithId $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
     $postAsArray = $this->stmtHandler->getPostWithId($dbConn);
+
     return $postAsArray;
   }
 
@@ -122,20 +118,22 @@ class DBhandler {
   }
 
   function getPostsByCriteria(GetPostsByCriteria $dbParametersAndId) {
+    // This should not replace getPostWithId because getting with id
+    // is the only reading method that guarantees only ONE post. 
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
-    $sql = $this->sqlGen->SQL_getPostWithId(); 
-    $rawData = $this->performDBcall($dbConn, $sql);
-    $postAsArray = $this->getAllPostsAsArray($rawData);
-    $dbConn->close();
-    return $postAsArray;
+    $postsAsArray = $this->stmtHandler->getPostsByCriteria($dbConn);
+
+    // $sql = $this->sqlGen->SQL_getPostWithId(); 
+    // $rawData = $this->performDBcall($dbConn, $sql);
+    // $postAsArray = $this->getAllPostsAsArray($rawData);
+    // $dbConn->close();
+    return $postsAsArray;
   }
 
   function updatePost(UpdatePost $dbParametersAndUpdatedPost) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndUpdatedPost);
-    // $sql = $this->sqlGen->SQL_updatePost();
-    // $success = $this->performDBcall($dbConn, $sql);
-    // $dbConn->close();
     $success = $this->stmtHandler->updatePost($dbConn, $this->postData);
+
     return $success;
   }
 

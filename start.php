@@ -14,6 +14,7 @@ require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
 require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
 require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
 require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
+require_once './DBhandler1_1/incomingDataClasses/GetPostsByCritera.php';
 require_once './ENV.php';
 
 
@@ -43,9 +44,13 @@ function getUsers() {
   // $allPosts = $dbh->getAllPosts($dataObj);
   // var_dump($allPosts);
 
-  // $dataObj = new \DBhandler\GetPostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => '10; DROP TABLE tbl_test --'));
+  // $dataObj = new \DBhandler\GetPostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => '10'));
   // $post = $dbh->getPostWithId($dataObj);
   // var_dump($post);
 
+
+  $dataObj = new \DBhandler\GetPostsByCriteria('flashcardapp', 'tbl_flashcard', array('user' => '1'));
+  $post = $dbh->getPostsByCriteria($dataObj);
+  var_dump($post);
   
 }

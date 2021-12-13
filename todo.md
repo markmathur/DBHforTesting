@@ -12,7 +12,8 @@
     - **DONE** ** Read what vulnerabilities exist. SQL injection doesn't seem to be a risk. 
 - Implement prepared SQL statements
   - **DONE** Start off with `GetPostWithId()` because it is does not effect the database with testing.
-  - *NOW*  `Do StorePost()` - this is harder, because `Extractor` returns a string for the SQL-statement, and we now want separate column names and values. 
+  - **DONE** `Do StorePost()` - this is harder, because `Extractor` returns a string for the SQL-statement, and we now want separate column names and values. 
+  
 
 ## Later
 - STR.php should not be in DBhandler-folder. It is environmental. 

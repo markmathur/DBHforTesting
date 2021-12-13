@@ -63,8 +63,8 @@ class Extractor {
     if($this->arrayHasMaxOneItem($idArray) == false)
       throw new \Exception("DBhandler received to long array. Only id is needed.");
     
-    $this->dbh->setIncomingIdColumn(array_keys($idArray)[0]);
-    $this->dbh->setIncomingIdValue(array_values($idArray)[0]);
+    $this->dbh->setIncomingCritColumn(array_keys($idArray)[0]);
+    $this->dbh->setIncomingCritValue(array_values($idArray)[0]);
     
   }
 

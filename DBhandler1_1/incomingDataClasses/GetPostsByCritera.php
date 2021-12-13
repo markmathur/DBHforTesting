@@ -2,7 +2,7 @@
 
 namespace DBhandler;
 
-class GetPostsByCriteria extends Mother_targetPostWithId {
+class GetPostsByCriteria extends Mother_targetPostWithOneCriteria {
   // public function __construct(string $db, string $tbl, array $arrCrit)
   // {
   //   $this->{DBhandler::DATABASE} = $db;

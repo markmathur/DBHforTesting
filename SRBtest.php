@@ -25,5 +25,10 @@
 
   ?>
 </main>
+<script>
+  const randomFactor = Math.floor(Math.random() * 255);
+  const colorStr = `rgb(100, 100, ${randomFactor})`
+  document.querySelector('html').style.backgroundColor =  colorStr
+</script>
 </body>
 </html>

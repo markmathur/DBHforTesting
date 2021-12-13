@@ -2,4 +2,4 @@
 
 namespace DBhandler;
 
-class GetPostWithId extends Mother_targetPostWithId {}
+class GetPostWithId extends Mother_targetPostWithOneCriteria {}

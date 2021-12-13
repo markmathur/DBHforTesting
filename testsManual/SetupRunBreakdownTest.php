@@ -27,6 +27,7 @@ class SetupRunBreakdownTest {
     require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
     require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
     require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
+    require_once './DBhandler1_1/incomingDataClasses/GetPostsByCritera.php';
     require_once './DBhandler1_1/incomingDataClasses/DeletePostWithId.php';
 
     $this->server = \ENV::dbServer;
@@ -54,6 +55,7 @@ class SetupRunBreakdownTest {
       $this->readPost();
       $this->updatePost();
       $this->readPost();
+      $this->manyPosts();
       $this->deletePost();
       $this->readPost();
       
@@ -90,6 +92,7 @@ class SetupRunBreakdownTest {
   }
 
   private function readPost() {
+    echo "<div> Reading post with id = 1.</div>";
     $dataObj = new GetPostWithId($this->dbName, $this->tableName, array('id' => '1'));
     $post = $this->dbh->getPostWithId($dataObj);
 
@@ -109,6 +112,15 @@ class SetupRunBreakdownTest {
     $row .= "</tr> </table>";
 
     echo $row;
+  }
+
+  private function manyPosts() {
+    echo "<div> Reading posts by criteria fieldOne = Sugar.</div>";
+    $dataObj = new GetPostsByCriteria($this->dbName, $this->tableName, array($this->field1 => 'Sugar'));
+    $postArr = $this->dbh->getPostsByCriteria($dataObj);
+
+    $arrayLength = sizeof($postArr);
+    echo("<div> { $arrayLength } post matches the criteria. </div>");
   }
 
   private function storePost() {

@@ -15,8 +15,8 @@ class StmtHandlerTest extends TestCase {
 
     $this->dbh->setTable('Tbl_example');
     $this->dbh->setStringOfColumns('col1, col2');
-    $this->dbh->setIncomingIdColumn('id');
-    $this->dbh->setIncomingIdValue('10');
+    $this->dbh->setIncomingCritColumn('id');
+    $this->dbh->setIncomingCritValue('10');
     $this->postData = array(
       "col1" => "one",
       "col2" => "two"

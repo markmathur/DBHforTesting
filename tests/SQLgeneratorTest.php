@@ -12,8 +12,8 @@ class SQLgeneratorTest extends TestCase {
     $this->dbh = new MockDBH();
 
     $this->dbh->setTable('tbl_flashcard');
-    $this->dbh->setIncomingIdColumn ('card_id');
-    $this->dbh->setIncomingIdValue('10');
+    $this->dbh->setIncomingCritColumn ('card_id');
+    $this->dbh->setIncomingCritValue('10');
 
     $gen = new SQLgenerator($this->dbh);
 

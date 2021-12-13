@@ -2,4 +2,4 @@
 
 namespace DBhandler;
 
-class DeletePostWithId extends Mother_targetPostWithId {}
+class DeletePostWithId extends Mother_targetPostWithOneCriteria {}
