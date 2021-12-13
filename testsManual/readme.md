@@ -4,5 +4,11 @@ As opposed to `folder:tests` where unit tests are put for running with PHPunit, 
 
 ## Setup-Run-Breakdown test
 
-On localhost, run it here (http://localhost/DBHforTesting/SRBtest.php){http://localhost/DBHforTesting/SRBtest.php}
+This 
+- creates a table ('tableForTesting')
+- adds a row
+- updates it and deletes it
+- and finally drops the table. 
+
+On localhost, run it here:  [localhost/DBHforTesting/SRBtest.php](http://localhost/DBHforTesting/SRBtest.php)
 
