@@ -16,7 +16,6 @@ require_once 'STR.php';
 require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithOneCriteria.php';
 require_once './ENV.php';
 require_once './DBhandler1_1/lib/Unpacker.php';
-require_once './DBhandler1_1/lib/SQLgenerator.php';
 require_once './DBhandler1_1/lib/StmtHandler.php';
 
 class DBhandler {
@@ -59,7 +58,6 @@ class DBhandler {
 
   function __construct()
   {
-    $this->sqlGen = new SQLgenerator($this);
     $this->stmtHandler = new StmtHandler($this);
   }
 
@@ -188,9 +186,15 @@ class DBhandler {
 
   private function getAllPostsAsArray($rawData) {
     $allRowsArray = array();
-    while ($row = mysqli_fetch_assoc($rawData)) {
-      array_push($allRowsArray, $row);
+    try {
+      while ($row = mysqli_fetch_assoc($rawData)) {
+        array_push($allRowsArray, $row);
+      }
     }
+    catch (\Exception $e) {
+      return false;
+    }
+    
 
     return $allRowsArray;
   }

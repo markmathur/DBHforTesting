@@ -46,11 +46,13 @@ class SetupRunBreakdownTest {
 
     try {
 
+      // *** SETUP ***
+      $this->dbh = new \DBhandler\DBhandler();
+
       $dbConn = $this->makeDBconnection();
       $this->createTable($dbConn);
 
       // *** TESTING ***
-      $this->dbh = new \DBhandler\DBhandler();
       $this->storePost();
       $this->readPost();
       $this->updatePost();
@@ -59,9 +61,10 @@ class SetupRunBreakdownTest {
       $this->deletePost();
       $this->readPost();
       
-      
+      // ** BREAKDOWN
       $this->dropTable($dbConn);
       $dbConn->close();
+
     }
     
     catch (\Exception $e) {
@@ -149,8 +152,14 @@ class SetupRunBreakdownTest {
     $this->id = 'id';
     $this->field1 = 'fieldOne';
     $this->field2 = 'fieldTwo';
-    
 
+    // TEST
+
+    $dataObj = new GetAllPosts($this->dbName, $this->tableName);
+    $res = $this->dbh->getAllPosts($dataObj);
+    var_dump($res);
+
+    // END TEST
     $sql = "CREATE TABLE {$this->tableName} (
       {$this->id} INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
       {$this->field1} VARCHAR(30) NOT NULL,
@@ -158,7 +167,7 @@ class SetupRunBreakdownTest {
       ); ";
 
     if($dbConn->query($sql) === FALSE){
-
+      echo $dbConn->errno;
       throw new \Exception("Failed to to create table. <br>" . $dbConn->error);
     }
     else{
