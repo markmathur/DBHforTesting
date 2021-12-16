@@ -139,10 +139,8 @@ class DBhandler {
 
   function deletePostWithId(DeletePostWithId  $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
-    $sql = $this->sqlGen->SQL_deletePostWithId(); 
-    $success = $this->performDBcall($dbConn, $sql);
-    if(mysqli_affected_rows($dbConn) < 1) return false;
-    $dbConn->close();
+    $success = $this->stmtHandler->deletePostWithId($dbConn);
+
     return $success;
   }
 

@@ -13,6 +13,7 @@
 - Implement prepared SQL statements
   - **DONE** Start off with `GetPostWithId()` because it is does not effect the database with testing.
   - **DONE** `Do StorePost()` - this is harder, because `Extractor` returns a string for the SQL-statement, and we now want separate column names and values. 
+  - *NOW* Only `DeletePostWithId` is left.
   
 
 ## Later

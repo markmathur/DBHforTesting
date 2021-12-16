@@ -14,6 +14,7 @@ require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
 require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
 require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
 require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
+require_once './DBhandler1_1/incomingDataClasses/DeletePostWithId.php';
 require_once './DBhandler1_1/incomingDataClasses/GetPostsByCritera.php';
 require_once './ENV.php';
 
@@ -26,9 +27,9 @@ function getUsers() {
 
   $dbh = new DBhandler();
 
-  $dataObj = new \DBhandler\StorePost('flashcardapp', 'tbl_flashcard', array('text1' => 'blind', 'text2' => 'blind', 'user' => 2));
-  $success = $dbh->storePost($dataObj);
-  var_dump($success);  
+  // $dataObj = new \DBhandler\StorePost('flashcardapp', 'tbl_flashcard', array('text1' => 'blind', 'text2' => 'blind', 'user' => 2));
+  // $success = $dbh->storePost($dataObj);
+  // var_dump($success);  
 
   // $dataObj = new \DBhandler\UpdatePost('flashcardapp', 'tbl_flashcard', array('card_id' => '23'), array('text2' => 'oanvänd'));
   // $success = $dbh->updatePost($dataObj);
@@ -44,13 +45,17 @@ function getUsers() {
   // $allPosts = $dbh->getAllPosts($dataObj);
   // var_dump($allPosts);
 
-  // $dataObj = new \DBhandler\GetPostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => '10'));
-  // $post = $dbh->getPostWithId($dataObj);
+
+  // $id = '32';
+  // $dataObj = new \DBhandler\DeletePostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => $id));
+  // $success = $dbh->deletePostWithId($dataObj);
+
+  // echo "Post {$id} has been deleted: {$success}";
+
+
+
+  // $dataObj = new \DBhandler\GetPostsByCriteria('flashcardapp', 'tbl_flashcard', array('user' => '1'));
+  // $post = $dbh->getPostsByCriteria($dataObj);
   // var_dump($post);
-
-
-  $dataObj = new \DBhandler\GetPostsByCriteria('flashcardapp', 'tbl_flashcard', array('user' => '1'));
-  $post = $dbh->getPostsByCriteria($dataObj);
-  var_dump($post);
   
 }
