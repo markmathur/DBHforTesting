@@ -160,6 +160,7 @@ class SetupRunBreakdownTest {
     var_dump($res);
 
     // END TEST
+    
     $sql = "CREATE TABLE {$this->tableName} (
       {$this->id} INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
       {$this->field1} VARCHAR(30) NOT NULL,

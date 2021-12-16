@@ -46,11 +46,14 @@ function getUsers() {
   // var_dump($allPosts);
 
 
-  // $id = '32';
-  // $dataObj = new \DBhandler\DeletePostWithId('flashcardapp', 'tbl_flashcard', array('card_id' => $id));
-  // $success = $dbh->deletePostWithId($dataObj);
+  $id = '30';
+  $dataObj = new \DBhandler\DeletePostWithId('flashcardapp', 'tbl_flashcard', array('card_i' => $id));
+  $success = $dbh->deletePostWithId($dataObj);
 
-  // echo "Post {$id} has been deleted: {$success}";
+  if($success === false)
+    echo 'Database order failed.';
+  else
+    echo "Number of posts deleted: {$success}";
 
 
 

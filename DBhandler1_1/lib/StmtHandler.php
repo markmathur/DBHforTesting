@@ -31,17 +31,24 @@ class StmtHandler {
   }
 
   public function deletePostWithId($dbConn) {
-    
-    $stmt = $dbConn->prepare("DELETE FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingCritColumn()} = ?");
-    $id='';
-    $stmt->bind_param("s", $id);
-    $id = $this->dbh->getIncomingCritValue();
-    // Should we call gePostWithId here to confirm?
-    $success = $stmt->execute();
-    $stmt->close();
-    $dbConn->close();
+    try {
+      $stmt = $dbConn->prepare("DELETE FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingCritColumn()} = ?");
 
-    return $success;
+      $id='';
+      $stmt->bind_param("s", $id);
+      $id = $this->dbh->getIncomingCritValue();
+      // Should we call gePostWithId here to confirm?
+      $success = $stmt->execute();
+      $result = $dbConn->affected_rows;
+      
+      $stmt->close();
+      $dbConn->close();
+
+      return $result;
+    }
+    catch (\Exception $e) {
+      return false;
+    }
   }
 
 

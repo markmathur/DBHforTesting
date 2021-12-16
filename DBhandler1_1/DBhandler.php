@@ -1,8 +1,13 @@
 <?php
 
 declare(strict_types = 1);
-
 namespace DBhandler;
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 
 use DBhandler\DeletePostWithId;
@@ -137,9 +142,9 @@ class DBhandler {
 
   function deletePostWithId(DeletePostWithId  $dbParametersAndId) {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
-    $success = $this->stmtHandler->deletePostWithId($dbConn);
-
-    return $success;
+    $result = $this->stmtHandler->deletePostWithId($dbConn);
+    // $result can be false (failure), 0 (non-existant post) or 1 (deleted a post).
+    return $result;
   }
 
 
@@ -151,7 +156,7 @@ class DBhandler {
     $unpacker->unpackIncomingDataArray($incData); 
     
     $dbConn = $this->connectToServer();
-
+    
     return $dbConn;
   }
 
@@ -187,8 +192,10 @@ class DBhandler {
   private function getAllPostsAsArray($rawData) {
     $allRowsArray = array();
     try {
-      while ($row = mysqli_fetch_assoc($rawData)) {
-        array_push($allRowsArray, $row);
+      if($rawData !== false) {
+        while ($row = mysqli_fetch_assoc($rawData)) {
+          array_push($allRowsArray, $row);
+        }  
       }
     }
     catch (\Exception $e) {
