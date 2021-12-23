@@ -13,8 +13,9 @@
 - Implement prepared SQL statements
   - **DONE** Start off with `GetPostWithId()` because it is does not effect the database with testing.
   - **DONE** `Do StorePost()` - this is harder, because `Extractor` returns a string for the SQL-statement, and we now want separate column names and values. 
-  - *NOW* What should DBhandler return if SELECT returns no hits? An empty array or `false`?
-  - The SRBtest should react with red if something goes wrong. Perhaps. Or else the error is always visible through PHPs error handling?
+  - *NOW* What should DBhandler return if SELECT returns no hits? An empty array or `false`? An empty array. *False should only be returned when DB disfunctions*. 
+  - The SRBtest should react with red if something goes wrong. 
+  - Add test on StmtHandler/getPostsByCriteria in `SetupRunBreakdownTest.php`. It should return an empty array if no hits.
   
 
 ## Later

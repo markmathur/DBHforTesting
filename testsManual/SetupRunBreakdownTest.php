@@ -168,7 +168,7 @@ class SetupRunBreakdownTest {
   // SUPPORTING METHODS
 
   private function displayPostInTable($post) {
-    if($post === false)
+    if(sizeof($post) === 0)
       $post = array('id' => '- ', 'fieldOne' => '- ', 'fieldTwo' => '- ');
 
     $row = "<table class=\"th\"> <tr  class=\"td\"> ";

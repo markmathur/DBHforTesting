@@ -30,7 +30,7 @@ final class EndToEndTest extends TestCase {
 
     $this->assertEquals(
       'Second',
-      $this->dbh->getPostWithId($dataObj)[0]['text1']
+      $this->dbh->getPostWithId($dataObj)['text1']
     );
 
   }

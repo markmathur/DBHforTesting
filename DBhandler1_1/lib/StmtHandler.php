@@ -24,7 +24,7 @@ class StmtHandler {
     $id = $this->dbh->getIncomingCritValue();
     $stmt->execute();
     $arrayOfPostsWithOnePost = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $thePost = $arrayOfPostsWithOnePost[0] ?? false; 
+    $thePost = $arrayOfPostsWithOnePost[0] ?? array(); 
     $stmt->close();
     $dbConn->close();
 
