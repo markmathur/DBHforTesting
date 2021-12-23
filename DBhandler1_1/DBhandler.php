@@ -125,11 +125,7 @@ class DBhandler {
     // is the only reading method that guarantees only ONE post. 
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
     $postsAsArray = $this->stmtHandler->getPostsByCriteria($dbConn);
-
-    // $sql = $this->sqlGen->SQL_getPostWithId(); 
-    // $rawData = $this->performDBcall($dbConn, $sql);
-    // $postAsArray = $this->getAllPostsAsArray($rawData);
-    // $dbConn->close();
+    
     return $postsAsArray;
   }
 

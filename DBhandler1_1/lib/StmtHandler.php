@@ -23,14 +23,16 @@ class StmtHandler {
     $stmt->bind_param("s", $id);
     $id = $this->dbh->getIncomingCritValue();
     $stmt->execute();
-    $postAsArray = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $arrayOfPostsWithOnePost = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $thePost = $arrayOfPostsWithOnePost[0] ?? false; 
     $stmt->close();
     $dbConn->close();
 
-    return $postAsArray;
+    return $thePost;
   }
 
   public function deletePostWithId($dbConn) {
+
     try {
       $stmt = $dbConn->prepare("DELETE FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingCritColumn()} = ?");
 
@@ -49,12 +51,12 @@ class StmtHandler {
     catch (\Exception $e) {
       return false;
     }
+
   }
 
 
   public function getPostsByCriteria($dbConn) {
     
-
     $stmt = $dbConn->prepare("SELECT * FROM {$this->dbh->getTable()} WHERE {$this->dbh->getIncomingCritColumn()} = ?");
     $crit = '';
     $stmt->bind_param("s", $crit);

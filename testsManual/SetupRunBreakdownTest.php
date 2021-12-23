@@ -99,23 +99,10 @@ class SetupRunBreakdownTest {
     $dataObj = new GetPostWithId($this->dbName, $this->tableName, array('id' => '1'));
     $post = $this->dbh->getPostWithId($dataObj);
 
-    if($post == false)
-      $post[] = array('id' => '- ', 'fieldOne' => '- ', 'fieldTwo' => '- ');
-
-    $post = $post[0];
-
-    $row = "<table class=\"th\"> <tr  class=\"td\"> ";
-    foreach($post as $col => $val) {
-      $row .= "<td> $col </td>";
-    }
-    $row .= "</tr> <tr>";
-    foreach($post as $col => $val) {
-      $row .= "<td> $val </td>";
-    }
-    $row .= "</tr> </table>";
-
-    echo $row;
+    $this->displayPostInTable($post);
   }
+
+  
 
   private function manyPosts() {
     echo "<div> Reading posts by criteria fieldOne = Sugar.</div>";
@@ -152,14 +139,6 @@ class SetupRunBreakdownTest {
     $this->id = 'id';
     $this->field1 = 'fieldOne';
     $this->field2 = 'fieldTwo';
-
-    // TEST
-
-    $dataObj = new GetAllPosts($this->dbName, $this->tableName);
-    $res = $this->dbh->getAllPosts($dataObj);
-    var_dump($res);
-
-    // END TEST
     
     $sql = "CREATE TABLE {$this->tableName} (
       {$this->id} INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -186,6 +165,27 @@ class SetupRunBreakdownTest {
     return $dbConn;
   }
 
+  // SUPPORTING METHODS
 
+  private function displayPostInTable($post) {
+    if($post === false)
+      $post = array('id' => '- ', 'fieldOne' => '- ', 'fieldTwo' => '- ');
+
+    $row = "<table class=\"th\"> <tr  class=\"td\"> ";
+
+    foreach($post as $col => $val) {
+      $row .= "<td> $col </td>";
+    }
+
+    $row .= "</tr> <tr>";
+
+    foreach($post as $col => $val) {
+      $row .= "<td> $val </td>";
+    }
+
+    $row .= "</tr> </table>";
+
+    echo $row;
+  }
 
 }
