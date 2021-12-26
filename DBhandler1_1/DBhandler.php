@@ -7,7 +7,7 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+// mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 
 use DBhandler\DeletePostWithId;
@@ -192,6 +192,9 @@ class DBhandler {
         while ($row = mysqli_fetch_assoc($rawData)) {
           array_push($allRowsArray, $row);
         }  
+      }
+      else {
+        return false;
       }
     }
     catch (\Exception $e) {

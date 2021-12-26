@@ -50,7 +50,10 @@ class SetupRunBreakdownTest {
       $this->dbh = new \DBhandler\DBhandler();
 
       $dbConn = $this->makeDBconnection();
+      
+      $this->dropTableIfThereRemainsOneFromAfaultyTest($dbConn);
       $this->createTable($dbConn);
+
 
       // *** TESTING ***
       $this->storePost();
@@ -59,7 +62,7 @@ class SetupRunBreakdownTest {
       $this->readPost();
       $this->manyPosts();
       $this->deletePost();
-      $this->readPost();
+      $this->makeSurePostIsDeleted();
       
       // ** BREAKDOWN
       $this->dropTable($dbConn);
@@ -69,48 +72,19 @@ class SetupRunBreakdownTest {
     
     catch (\Exception $e) {
       echo "<div class=\"exceptionMessage\"> " . $e->getMessage() . " </div> ";
-      die();
+      // die();
     }
 
   }
 
-  private function deletePost() {
-    $dataObj = new DeletePostWithId($this->dbName, $this->tableName, array('id' => '1'));
-
+  private function dropTableIfThereRemainsOneFromAfaultyTest($dbConn) {
+    $dataObj = new GetAllPosts($this->dbName, $this->tableName);
+    $postArr = $this->dbh->getAllPosts($dataObj);
     
-    if($this->dbh->deletePostWithId($dataObj) == true)
-      echo '<div>Post is deleted.</div>';
-    else
-      throw new \Exception('Failed to delete post.');
-  }
+    if($postArr !== false) {
+      $this->dropTable($dbConn);
+    }
 
-  private function updatePost() {
-    $dataObj = new UpdatePost($this->dbName, $this->tableName, array('id' => '1'), array($this->field2 => 'Brunsocker'));
-
-    if($this->dbh->updatePost($dataObj) == true)
-      echo '<div>Post is updated.</div>';
-    else
-      throw new \Exception('Failed to update post.');
-    
-  }
-
-  private function readPost() {
-    echo "<div> Reading post with id = 1.</div>";
-    $dataObj = new GetPostWithId($this->dbName, $this->tableName, array('id' => '1'));
-    $post = $this->dbh->getPostWithId($dataObj);
-
-    $this->displayPostInTable($post);
-  }
-
-  
-
-  private function manyPosts() {
-    echo "<div> Reading posts by criteria fieldOne = Sugar.</div>";
-    $dataObj = new GetPostsByCriteria($this->dbName, $this->tableName, array($this->field1 => 'Sugar'));
-    $postArr = $this->dbh->getPostsByCriteria($dataObj);
-
-    $arrayLength = sizeof($postArr);
-    echo("<div> { $arrayLength } post matches the criteria. </div>");
   }
 
   private function storePost() {
@@ -125,13 +99,60 @@ class SetupRunBreakdownTest {
       throw new \Exception('Failed to store post.');
   }
 
-  private function dropTable($dbConn) {
-    $sql = "DROP TABLE {$this->tableName};";
+  private function readPost() {
+    echo "<div> Reading post with id = 1.</div>";
+    $dataObj = new GetPostWithId($this->dbName, $this->tableName, array('id' => '1'));
+    $post = $this->dbh->getPostWithId($dataObj);
 
-    if($dbConn->query($sql) === FALSE)
-      throw new \Exception('Failed to connect to drop table.');
-    else 
-      echo "<div class=\"tableAction\"> Table dropped </div>";
+    if($post == true)
+      $this->displayPostInTable($post);
+    else
+      throw new \Exception('Failed to read post with id = 1');
+  }
+
+  private function makeSurePostIsDeleted() {
+
+    try {
+      $this->readPost();
+      echo "<div class=\"exceptionMessage\">Failed to delete post with id = 1 </div> ";
+    }
+    catch (\Exception $e) {
+      echo 'Read failed. Post is successfully deleted.';
+    }
+
+  }
+
+  private function updatePost() {
+    $dataObj = new UpdatePost($this->dbName, $this->tableName, array('id' => '1'), array($this->field2 => 'Brunsocker'));
+
+    if($this->dbh->updatePost($dataObj) == true)
+      echo '<div>Post is updated.</div>';
+    else
+      throw new \Exception('Failed to update post with id = 1.');
+    
+  }
+
+  private function manyPosts() {
+    $dataObj = new GetPostsByCriteria($this->dbName, $this->tableName, array($this->field1 => 'Sugar'));
+    $postArr = $this->dbh->getPostsByCriteria($dataObj);
+    if($postArr == true) {
+      echo "<div> Reading posts by criteria fieldOne = Sugar.</div>";
+      $arrayLength = sizeof($postArr);
+      echo("<div> { $arrayLength } post matches the criteria. </div>");
+    }
+    else {
+      throw new \Exception('Failed to read posts with field1 = sugar');
+    }
+    
+  }
+
+  private function deletePost() {
+    $dataObj = new DeletePostWithId($this->dbName, $this->tableName, array('id' => '1'));
+    
+    if($this->dbh->deletePostWithId($dataObj) == true)
+      echo '<div>Post is deleted.</div>';
+    else
+      throw new \Exception('Failed to delete post.');
   }
 
   private function createTable($dbConn) {
@@ -157,6 +178,16 @@ class SetupRunBreakdownTest {
     return;
   }
 
+  private function dropTable($dbConn) {
+    $sql = "DROP TABLE {$this->tableName};";
+
+    if($dbConn->query($sql) === FALSE)
+      throw new \Exception('Failed to connect to drop table.');
+    else 
+      echo "<div class=\"tableAction\"> Table dropped </div>";
+  }
+
+
   private function makeDBconnection() {
     $dbConn = new mysqli($this->server, $this->username, $this->password, $this->dbName);
     if(!$dbConn) {
@@ -164,6 +195,7 @@ class SetupRunBreakdownTest {
     }
     return $dbConn;
   }
+
 
   // SUPPORTING METHODS
 
