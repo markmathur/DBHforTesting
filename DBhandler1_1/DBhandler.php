@@ -17,11 +17,9 @@ use DBhandler\StorePost;
 use mysqli;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
-require_once 'STR.php';
-require_once './DBhandler1_1/incomingDataClasses/Mother_targetPostWithOneCriteria.php';
-require_once './ENV.php';
-require_once './DBhandler1_1/lib/Unpacker.php';
-require_once './DBhandler1_1/lib/StmtHandler.php';
+require_once 'lib/miscRequireFunctions.php';
+
+
 
 class DBhandler {
 
@@ -63,6 +61,7 @@ class DBhandler {
 
   function __construct()
   {
+    requireAllFiles();
     $this->stmtHandler = new StmtHandler($this);
   }
 
