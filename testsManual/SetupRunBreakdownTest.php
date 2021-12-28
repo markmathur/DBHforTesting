@@ -4,6 +4,8 @@ namespace DBhandler;
 
 use mysqli;
 
+require_once './DBhandler1_1/lib/miscRequireFunctions.php';
+
 class SetupRunBreakdownTest {
 
   private $server;
@@ -19,17 +21,6 @@ class SetupRunBreakdownTest {
 
   function __construct()
   {
-    require_once './ENV.php';
-    require_once './DBhandler1_1/STR.php';
-    require_once './DBhandler1_1/DBhandler.php';
-
-    require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
-    require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
-    require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
-    require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
-    require_once './DBhandler1_1/incomingDataClasses/GetPostsByCritera.php';
-    require_once './DBhandler1_1/incomingDataClasses/DeletePostWithId.php';
-
     $this->server = \ENV::dbServer;
     $this->username = 'tester';
     $this->password = 'o9)v423SD!!y/';

@@ -15,3 +15,4 @@
   require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
   require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
   require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
+  require_once './DBhandler1_1/incomingDataClasses/DeletePostWithId.php';
