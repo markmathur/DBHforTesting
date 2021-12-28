@@ -4,12 +4,8 @@ namespace DBhandler;
 
 use PHPUnit\Framework\TestCase;
 
-require_once './DBhandler1_1/DBhandler.php';
-require_once './DBhandler1_1/incomingDataClasses/GetPostWithId.php';
-require_once './DBhandler1_1/incomingDataClasses/GetPostsByCritera.php';
-require_once './DBhandler1_1/incomingDataClasses/GetAllPosts.php';
-require_once './DBhandler1_1/incomingDataClasses/UpdatePost.php';
-require_once './DBhandler1_1/incomingDataClasses/StorePost.php';
+require_once './DBhandler1_1/lib/miscRequireFunctions.php';
+
 
 final class EndToEndTest extends TestCase {
 

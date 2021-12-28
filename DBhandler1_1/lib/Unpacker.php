@@ -2,8 +2,6 @@
 
 namespace DBhandler;
 
-require_once './DBhandler1_1/lib/Extractor.php';
-
 class Unpacker {
   
   private DBhandler $dbh;

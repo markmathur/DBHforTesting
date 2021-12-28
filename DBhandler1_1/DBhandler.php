@@ -19,8 +19,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 require_once 'lib/miscRequireFunctions.php';
 
-
-
 class DBhandler {
 
   // ABOUT
@@ -61,7 +59,6 @@ class DBhandler {
 
   function __construct()
   {
-    requireAllFiles();
     $this->stmtHandler = new StmtHandler($this);
   }
 
