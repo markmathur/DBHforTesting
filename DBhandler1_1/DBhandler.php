@@ -93,21 +93,21 @@ class DBhandler {
 
 
   // *** PUBLIC METHODS ***
-  function storePost(StorePost $dbParametersAndPostData) {
+  function storePost(StorePost $dbParametersAndPostData): bool {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndPostData);
     $success = $this->stmtHandler->storePost($dbConn, $this->postData);
 
     return $success;
   }
 
-  function getPostWithId(GetPostWithId $dbParametersAndId) {
+  function getPostWithId(GetPostWithId $dbParametersAndId): array {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
     $postAsArray = $this->stmtHandler->getPostWithId($dbConn);
 
     return $postAsArray;
   }
 
-  function getAllPosts(GetAllPosts $dbParameters) {
+  function getAllPosts(GetAllPosts $dbParameters): array {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParameters);
     $sql = "SELECT * FROM {$this->getTable()};";
     $rawData = $this->performDBcall($dbConn, $sql);
@@ -116,7 +116,7 @@ class DBhandler {
     return $postAsArray;
   }
 
-  function getPostsByCriteria(GetPostsByCriteria $dbParametersAndId) {
+  function getPostsByCriteria(GetPostsByCriteria $dbParametersAndId): array {
     // This should not replace getPostWithId because getting with id
     // is the only reading method that guarantees only ONE post. 
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
@@ -125,14 +125,14 @@ class DBhandler {
     return $postsAsArray;
   }
 
-  function updatePost(UpdatePost $dbParametersAndUpdatedPost) {
+  function updatePost(UpdatePost $dbParametersAndUpdatedPost): bool {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndUpdatedPost);
     $success = $this->stmtHandler->updatePost($dbConn, $this->postData);
 
     return $success;
   }
 
-  function deletePostWithId(DeletePostWithId  $dbParametersAndId) {
+  function deletePostWithId(DeletePostWithId  $dbParametersAndId): bool {
     $dbConn = $this->unpackDataAndOpenDBconnection($dbParametersAndId);
     $result = $this->stmtHandler->deletePostWithId($dbConn);
     // $result can be false (failure), 0 (non-existant post) or 1 (deleted a post).
